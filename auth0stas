@@ -3,98 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic Progress Bar</title>
+    <title>Auth0 Dashboard - Migration Flow</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        :root {
-            --bg-gray: #eeeeee;
-            --progress-green: #4caf50;
-            --text-color: #333;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-
-        .progress-wrapper {
-            width: 100%;
-            max-width: 600px;
-            text-align: center;
-        }
-
-        .progress-label {
-            font-size: 18px;
-            margin-bottom: 15px;
-            color: var(--text-color);
-        }
-
-        /* The background bar */
-        .progress-container {
-            width: 100%;
-            background-color: var(--bg-gray);
-            height: 60px;
-            position: relative;
-        }
-
-        /* The moving green bar */
-        .progress-bar {
-            height: 100%;
-            background-color: var(--progress-green);
-            width: 0%; /* Initial width */
-            transition: width 0.5s ease-in-out;
-            display: flex;
-            align-items: center;
-            padding-left: 15px;
-            box-sizing: border-box;
-        }
-
-        /* Percentage text inside the bar */
-        .progress-text {
-            color: white;
-            font-weight: bold;
-            font-size: 16px;
-        }
+        .auth0-gradient { background: linear-gradient(135deg, #eb5424 0%, #16214d 100%); }
+        .card { @apply bg-white p-6 rounded-xl shadow-sm border border-gray-100; }
+        .region-badge { @apply px-2 py-1 rounded text-[10px] font-bold uppercase; }
+        .status-syncing { @apply bg-blue-100 text-blue-700 animate-pulse; }
     </style>
 </head>
-<body>
+<body class="bg-gray-50 text-gray-800 font-sans">
 
-    <div class="progress-wrapper">
-        <div class="progress-label" id="progress-label">Progress: 0 / 0</div>
-        
-        <div class="progress-container">
-            <div id="progress-bar" class="progress-bar">
-                <span id="percentage-text" class="progress-text">0%</span>
+    <nav class="auth0-gradient text-white p-6 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-4">
+                <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-inner">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L3 7V17L12 22L21 17V7L12 2Z" stroke="#eb5424" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-bold tracking-tight">Auth0 Dashboard</h1>
+                    <p class="text-xs opacity-70 uppercase tracking-widest">Enterprise Migration Monitor</p>
+                </div>
             </div>
         </div>
-    </div>
+    </nav>
 
-    <script>
-        /**
-         * Updates the progress bar
-         * @param {number} a - Current count
-         * @param {number} b - Overall total
-         */
-        function updateProgress(a, b) {
-            const progressBar = document.getElementById('progress-bar');
-            const progressLabel = document.getElementById('progress-label');
-            const percentageText = document.getElementById('percentage-text');
+    <main class="container mx-auto py-8 px-4">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="card border-t-4 border-gray-400">
+                <p class="text-gray-500 text-xs font-bold uppercase mb-1">Total Users</p>
+                <h2 class="text-3xl font-black text-gray-800" id="stat-total">0</h2>
+            </div>
+            <div class="card border-t-4 border-green-500">
+                <p class="text-gray-500 text-xs font-bold uppercase mb-1">Migrated</p>
+                <h2 class="text-3xl font-black text-green-600" id="stat-migrated">0</h2>
+            </div>
+            <div class="card border-t-4 border-orange-400">
+                <p class="text-gray-500 text-xs font-bold uppercase mb-1">Pending</p>
+                <h2 class="text-3xl font-black text-orange-500" id="stat-pending">0</h2>
+            </div>
+            <div class="card border-t-4 border-blue-500 bg-blue-50/30">
+                <p class="text-gray-500 text-xs font-bold uppercase mb-1">Migration Timeline</p>
+                <div class="space-y-1">
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-400">Started:</span>
+                        <span class="font-bold text-blue-900" id="date-start">2026-02-01</span>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-400">Today:</span>
+                        <span class="font-bold text-blue-900" id="date-today">2026-02-06</span>
+                    </div>
+                    <div class="pt-2 border-t border-blue-100 flex justify-between items-baseline">
+                        <span class="text-xs font-bold text-blue-600 uppercase">Elapsed:</span>
+                        <span class="text-2xl font-black text-blue-700" id="days-spent">0 Days</span>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-            // Calculate percentage
-            const percentage = b > 0 ? ((a / b) * 100).toFixed(1) : 0;
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            <div class="card lg:col-span-1">
+                <h3 class="text-lg font-bold mb-6">Global Completion</h3>
+                <div class="relative pt-1">
+                    <div class="overflow-hidden h-14 text-xs flex rounded-lg bg-gray-100 border border-gray-200">
+                        <div id="dynamic-progress-bar" style="width: 0%" class="flex flex-col text-center whitespace-nowrap text-white justify-center bg-green-500 transition-all duration-1000 font-bold text-xl shadow-lg">
+                            0%
+                        </div>
+                    </div>
+                    <div class="mt-8 space-y-4">
+                        <div class="flex justify-between text-sm border-b pb-2">
+                            <span class="text-gray-500">Migration Progress</span>
+                            <span class="font-semibold text-gray-700" id="progress-fraction">0 / 0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-            // Update DOM
-            progressLabel.innerText = `Progress: ${a} / ${b}`;
-            progressBar.style.width = percentage + "%";
-            percentageText.innerText = percentage + "%";
-        }
-
-        // Example Usage:
-        // Pass your 'a' and 'b' values here
-        updateProgress(964, 4918);
-    </script>
-</body>
-</html>
+            <div class="card lg:col-span-2">
+                <h3 class="text-lg font-bold mb-6 underline decoration-orange-500 decoration-4 underline-offset-8">Currently Migrating Regions</h3>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                        <div class="flex justify-between items-center mb-2"><span class="font-bold">VIC</span><span class="region-badge status-syncing">Syncing</span></div>
+                        <div class="w-full bg-gray-200 h-1.5 rounded-full"><div class="bg-blue-500 h-1.5 rounded-full" style="width: 65%"></div></div>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                        <div class="flex justify
