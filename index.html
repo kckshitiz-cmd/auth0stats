@@ -35,11 +35,11 @@
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
             <div class="card border-t-4 border-gray-400">
                 <p class="text-gray-500 text-xs font-bold uppercase mb-1">Total Users</p>
-                <h2 class="text-3xl font-black text-gray-800" id="stat-total">0</h2>
+                <h2 class="text-3xl font-black text-gray-800" id="stat-total">1300</h2>
             </div>
             <div class="card border-t-4 border-green-500">
                 <p class="text-gray-500 text-xs font-bold uppercase mb-1">Migrated</p>
-                <h2 class="text-3xl font-black text-green-600" id="stat-migrated">0</h2>
+                <h2 class="text-3xl font-black text-green-600" id="stat-migrated">10000</h2>
             </div>
             <div class="card border-t-4 border-orange-400">
                 <p class="text-gray-500 text-xs font-bold uppercase mb-1">Pending</p>
@@ -90,4 +90,58 @@
                         <div class="w-full bg-gray-200 h-1.5 rounded-full"><div class="bg-blue-500 h-1.5 rounded-full" style="width: 65%"></div></div>
                     </div>
                     <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
-                        <div class="flex justify
+                        <div class="flex justify-between items-center mb-2"><span class="font-bold">ACT</span><span class="region-badge status-syncing">Syncing</span></div>
+                        <div class="w-full bg-gray-200 h-1.5 rounded-full"><div class="bg-blue-500 h-1.5 rounded-full" style="width: 42%"></div></div>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                        <div class="flex justify-between items-center mb-2"><span class="font-bold">WA</span><span class="region-badge status-syncing">Syncing</span></div>
+                        <div class="w-full bg-gray-200 h-1.5 rounded-full"><div class="bg-blue-500 h-1.5 rounded-full" style="width: 88%"></div></div>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                        <div class="flex justify-between items-center mb-2"><span class="font-bold">QLD</span><span class="region-badge status-syncing">Syncing</span></div>
+                        <div class="w-full bg-gray-200 h-1.5 rounded-full"><div class="bg-blue-500 h-1.5 rounded-full" style="width: 15%"></div></div>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                        <div class="flex justify-between items-center mb-2"><span class="font-bold">NT</span><span class="region-badge status-syncing">Syncing</span></div>
+                        <div class="w-full bg-gray-200 h-1.5 rounded-full"><div class="bg-blue-500 h-1.5 rounded-full" style="width: 30%"></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // CONFIGURATION: Update these values
+        const migratedCount = 1000;
+        const totalCount = 3954;
+        const startDateStr = "2026-02-01";
+        const todayDateStr = "2026-02-06";
+
+        function initDashboard() {
+            // 1. Calculate Percentage
+            const percentage = ((migratedCount / totalCount) * 100).toFixed(1);
+            const pendingCount = totalCount - migratedCount;
+
+            // 2. Calculate Days Spent
+            const start = new Date(startDateStr);
+            const today = new Date(todayDateStr);
+            const diffTime = Math.abs(today - start);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+            // 3. Update DOM
+            document.getElementById('stat-total').innerText = totalCount.toLocaleString();
+            document.getElementById('stat-migrated').innerText = migratedCount.toLocaleString();
+            document.getElementById('stat-pending').innerText = pendingCount.toLocaleString();
+            document.getElementById('days-spent').innerText = `${diffDays} Days`;
+            
+            const progressBar = document.getElementById('dynamic-progress-bar');
+            progressBar.style.width = `${percentage}%`;
+            progressBar.innerText = `${percentage}%`;
+            
+            document.getElementById('progress-fraction').innerText = `${migratedCount.toLocaleString()} / ${totalCount.toLocaleString()}`;
+        }
+
+        window.onload = initDashboard;
+    </script>
+</body>
+</html>
