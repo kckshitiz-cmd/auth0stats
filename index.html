@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Progress Bar</title>
+    <style>
+        :root {
+            --bg-gray: #eeeeee;
+            --progress-green: #4caf50;
+            --text-color: #333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .progress-wrapper {
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        .progress-label {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
+        /* The background bar */
+        .progress-container {
+            width: 100%;
+            background-color: var(--bg-gray);
+            height: 60px;
+            position: relative;
+        }
+
+        /* The moving green bar */
+        .progress-bar {
+            height: 100%;
+            background-color: var(--progress-green);
+            width: 0%; /* Initial width */
+            transition: width 0.5s ease-in-out;
+            display: flex;
+            align-items: center;
+            padding-left: 15px;
+            box-sizing: border-box;
+        }
+
+        /* Percentage text inside the bar */
+        .progress-text {
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="progress-wrapper">
+        <div class="progress-label" id="progress-label">Progress: 0 / 0</div>
+        
+        <div class="progress-container">
+            <div id="progress-bar" class="progress-bar">
+                <span id="percentage-text" class="progress-text">0%</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /**
+         * Updates the progress bar
+         * @param {number} a - Current count
+         * @param {number} b - Overall total
+         */
+        function updateProgress(a, b) {
+            const progressBar = document.getElementById('progress-bar');
+            const progressLabel = document.getElementById('progress-label');
+            const percentageText = document.getElementById('percentage-text');
+
+            // Calculate percentage
+            const percentage = b > 0 ? ((a / b) * 100).toFixed(1) : 0;
+
+            // Update DOM
+            progressLabel.innerText = `Progress: ${a} / ${b}`;
+            progressBar.style.width = percentage + "%";
+            percentageText.innerText = percentage + "%";
+        }
+
+        // Example Usage:
+        // Pass your 'a' and 'b' values here
+        updateProgress(964, 4918);
+    </script>
+</body>
+</html>
