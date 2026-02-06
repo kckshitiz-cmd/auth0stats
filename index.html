@@ -9,12 +9,8 @@
     <style>
         .auth0-gradient { background: linear-gradient(135deg, #eb5424 0%, #16214d 100%); }
         .card { @apply bg-white p-6 rounded-xl shadow-sm border border-gray-100; }
-        .region-badge { @apply px-2 py-1 rounded text-[10px] font-bold uppercase; }
-        
-        /* Green "In Progress" Style */
-        .status-in-progress { @apply bg-green-100 text-green-700 animate-pulse; }
-        
-        /* Gray "Pending" Style */
+        .region-badge { @apply px-2 py-1 rounded text-[9px] font-bold uppercase tracking-tight; }
+        .status-migrating { @apply bg-green-100 text-green-700 animate-pulse; }
         .status-pending { @apply bg-gray-100 text-gray-500; }
     </style>
 </head>
@@ -91,58 +87,37 @@
                 <h3 class="text-lg font-bold mb-6 underline decoration-orange-500 decoration-4 underline-offset-8">Currently Migrating Regions</h3>
                 <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
                     <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="font-bold text-gray-700">VIC</span>
-                            <span class="region-badge status-in-progress">In Progress</span>
-                        </div>
-                        <div class="w-full bg-gray-200 h-1.5 rounded-full">
-                            <div class="bg-green-500 h-1.5 rounded-full" style="width: 65%"></div>
-                        </div>
+                        <div class="flex justify-between items-center mb-2"><span class="font-bold text-gray-700">VIC</span><span class="region-badge status-migrating">Migrating User</span></div>
+                        <div class="w-full bg-gray-200 h-1.5 rounded-full"><div class="bg-green-500 h-1.5 rounded-full" style="width: 65%"></div></div>
                     </div>
                     <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="font-bold text-gray-700">ACT</span>
-                            <span class="region-badge status-in-progress">In Progress</span>
-                        </div>
-                        <div class="w-full bg-gray-200 h-1.5 rounded-full">
-                            <div class="bg-green-500 h-1.5 rounded-full" style="width: 42%"></div>
-                        </div>
+                        <div class="flex justify-between items-center mb-2"><span class="font-bold text-gray-700">ACT</span><span class="region-badge status-migrating">Migrating User</span></div>
+                        <div class="w-full bg-gray-200 h-1.5 rounded-full"><div class="bg-green-500 h-1.5 rounded-full" style="width: 42%"></div></div>
                     </div>
                     <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="font-bold text-gray-700">WA</span>
-                            <span class="region-badge status-in-progress">In Progress</span>
-                        </div>
-                        <div class="w-full bg-gray-200 h-1.5 rounded-full">
-                            <div class="bg-green-500 h-1.5 rounded-full" style="width: 88%"></div>
-                        </div>
+                        <div class="flex justify-between items-center mb-2"><span class="font-bold text-gray-700">WA</span><span class="region-badge status-migrating">Migrating User</span></div>
+                        <div class="w-full bg-gray-200 h-1.5 rounded-full"><div class="bg-green-500 h-1.5 rounded-full" style="width: 88%"></div></div>
                     </div>
                     <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="font-bold text-gray-700">QLD</span>
-                            <span class="region-badge status-in-progress">In Progress</span>
-                        </div>
-                        <div class="w-full bg-gray-200 h-1.5 rounded-full">
-                            <div class="bg-green-500 h-1.5 rounded-full" style="width: 15%"></div>
-                        </div>
+                        <div class="flex justify-between items-center mb-2"><span class="font-bold text-gray-700">QLD</span><span class="region-badge status-migrating">Migrating User</span></div>
+                        <div class="w-full bg-gray-200 h-1.5 rounded-full"><div class="bg-green-500 h-1.5 rounded-full" style="width: 15%"></div></div>
                     </div>
                     <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="font-bold text-gray-700">NT</span>
-                            <span class="region-badge status-in-progress">In Progress</span>
-                        </div>
-                        <div class="w-full bg-gray-200 h-1.5 rounded-full">
-                            <div class="bg-green-500 h-1.5 rounded-full" style="width: 30%"></div>
-                        </div>
+                        <div class="flex justify-between items-center mb-2"><span class="font-bold text-gray-700">NT</span><span class="region-badge status-migrating">Migrating User</span></div>
+                        <div class="w-full bg-gray-200 h-1.5 rounded-full"><div class="bg-green-500 h-1.5 rounded-full" style="width: 30%"></div></div>
                     </div>
+                    <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                        <div class="flex justify-between items-center mb-2"><span class="font-bold text-gray-700">NZ</span><span class="region-badge status-migrating">Migrating User</span></div>
+                        <div class="w-full bg-gray-200 h-1.5 rounded-full"><div class="bg-green-500 h-1.5 rounded-full" style="width: 25%"></div></div>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                        <div class="flex justify-between items-center mb-2"><span class="font-bold text-gray-700">TAS</span><span class="region-badge status-migrating">Migrating User</span></div>
+                        <div class="w-full bg-gray-200 h-1.5 rounded-full"><div class="bg-green-500 h-1.5 rounded-full" style="width: 50%"></div></div>
+                    </div>
+                    
                     <div class="p-4 bg-gray-50 rounded-lg border border-gray-200 opacity-75">
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="font-bold text-gray-500">NSW</span>
-                            <span class="region-badge status-pending">Pending</span>
-                        </div>
-                        <div class="w-full bg-gray-200 h-1.5 rounded-full">
-                            <div class="bg-gray-400 h-1.5 rounded-full" style="width: 0%"></div>
-                        </div>
+                        <div class="flex justify-between items-center mb-2"><span class="font-bold text-gray-500">NSW</span><span class="region-badge status-pending">Pending</span></div>
+                        <div class="w-full bg-gray-200 h-1.5 rounded-full"><div class="bg-gray-400 h-1.5 rounded-full" style="width: 0%"></div></div>
                     </div>
                 </div>
             </div>
