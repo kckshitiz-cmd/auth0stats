@@ -3,98 +3,174 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic Progress Bar</title>
+    <title>Auth0 Migration Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        :root {
-            --bg-gray: #eeeeee;
-            --progress-green: #4caf50;
-            --text-color: #333;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-
-        .progress-wrapper {
-            width: 100%;
-            max-width: 600px;
-            text-align: center;
-        }
-
-        .progress-label {
-            font-size: 18px;
-            margin-bottom: 15px;
-            color: var(--text-color);
-        }
-
-        /* The background bar */
-        .progress-container {
-            width: 100%;
-            background-color: var(--bg-gray);
-            height: 60px;
-            position: relative;
-        }
-
-        /* The moving green bar */
-        .progress-bar {
-            height: 100%;
-            background-color: var(--progress-green);
-            width: 0%; /* Initial width */
-            transition: width 0.5s ease-in-out;
-            display: flex;
-            align-items: center;
-            padding-left: 15px;
-            box-sizing: border-box;
-        }
-
-        /* Percentage text inside the bar */
-        .progress-text {
-            color: white;
-            font-weight: bold;
-            font-size: 16px;
-        }
+        .auth0-gradient { background: linear-gradient(135deg, #eb5424 0%, #16214d 100%); }
+        .card { @apply bg-white p-6 rounded-xl shadow-sm border border-gray-100; }
+        .region-badge { @apply px-2 py-1 rounded text-xs font-bold uppercase; }
+        .status-syncing { @apply bg-blue-100 text-blue-700 animate-pulse; }
     </style>
 </head>
-<body>
+<body class="bg-gray-50 text-gray-800 font-sans">
 
-    <div class="progress-wrapper">
-        <div class="progress-label" id="progress-label">Progress: 0 / 0</div>
-        
-        <div class="progress-container">
-            <div id="progress-bar" class="progress-bar">
-                <span id="percentage-text" class="progress-text">0%</span>
+    <nav class="auth0-gradient text-white p-6 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-4">
+                <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-inner">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L3 7V17L12 22L21 17V7L12 2Z" stroke="#eb5424" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-bold tracking-tight">Auth0 Dashboard</h1>
+                    <p class="text-xs opacity-70 uppercase tracking-widest">Enterprise User Migration</p>
+                </div>
+            </div>
+            <div class="text-right">
+                <p class="text-sm font-medium">Migration Active</p>
+                <p class="text-xs opacity-60">System Time: 2026-02-06</p>
             </div>
         </div>
-    </div>
+    </nav>
+
+    <main class="container mx-auto py-8 px-4">
+        
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="card border-t-4 border-gray-400">
+                <p class="text-gray-500 text-xs font-bold uppercase mb-1">Total Users</p>
+                <h2 class="text-3xl font-black text-gray-800">3,954</h2>
+            </div>
+            <div class="card border-t-4 border-green-500">
+                <p class="text-gray-500 text-xs font-bold uppercase mb-1">Migrated</p>
+                <h2 class="text-3xl font-black text-green-600">964</h2>
+            </div>
+            <div class="card border-t-4 border-orange-400">
+                <p class="text-gray-500 text-xs font-bold uppercase mb-1">Pending</p>
+                <h2 class="text-3xl font-black text-orange-500">2,990</h2>
+            </div>
+            <div class="card border-t-4 border-blue-500">
+                <p class="text-gray-500 text-xs font-bold uppercase mb-1">Date Started</p>
+                <h2 class="text-3xl font-black text-blue-600">2026-02-01</h2>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            
+            <div class="card lg:col-span-1">
+                <h3 class="text-lg font-bold mb-6">Global Completion</h3>
+                <div class="relative pt-1">
+                    <div class="overflow-hidden h-14 text-xs flex rounded-lg bg-gray-100 border border-gray-200">
+                        <div style="width: 24.4%" class="flex flex-col text-center whitespace-nowrap text-white justify-center bg-green-500 transition-all duration-1000 font-bold text-xl shadow-lg">
+                            24.4%
+                        </div>
+                    </div>
+                    <div class="mt-8 space-y-4">
+                        <div class="flex justify-between text-sm border-b pb-2">
+                            <span class="text-gray-500">Days Elapsed</span>
+                            <span class="font-semibold text-gray-700">5 Days</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500">Current Batch</span>
+                            <span class="font-semibold text-gray-700">Production_AU_West</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card lg:col-span-2">
+                <h3 class="text-lg font-bold mb-6">Currently Migrating Regions</h3>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-bold">VIC</span>
+                            <span class="region-badge status-syncing">Syncing</span>
+                        </div>
+                        <div class="w-full bg-gray-200 h-1.5 rounded-full">
+                            <div class="bg-blue-500 h-1.5 rounded-full" style="width: 65%"></div>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-bold">ACT</span>
+                            <span class="region-badge status-syncing">Syncing</span>
+                        </div>
+                        <div class="w-full bg-gray-200 h-1.5 rounded-full">
+                            <div class="bg-blue-500 h-1.5 rounded-full" style="width: 42%"></div>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-bold">WA</span>
+                            <span class="region-badge status-syncing">Syncing</span>
+                        </div>
+                        <div class="w-full bg-gray-200 h-1.5 rounded-full">
+                            <div class="bg-blue-500 h-1.5 rounded-full" style="width: 88%"></div>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-bold">QLD</span>
+                            <span class="region-badge status-syncing">Syncing</span>
+                        </div>
+                        <div class="w-full bg-gray-200 h-1.5 rounded-full">
+                            <div class="bg-blue-500 h-1.5 rounded-full" style="width: 15%"></div>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-bold">NT</span>
+                            <span class="region-badge status-syncing">Syncing</span>
+                        </div>
+                        <div class="w-full bg-gray-200 h-1.5 rounded-full">
+                            <div class="bg-blue-500 h-1.5 rounded-full" style="width: 30%"></div>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-bold">NSW</span>
+                            <span class="region-badge bg-green-100 text-green-700 uppercase">Queued</span>
+                        </div>
+                        <div class="w-full bg-gray-200 h-1.5 rounded-full">
+                            <div class="bg-gray-400 h-1.5 rounded-full" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3 class="text-lg font-bold mb-4">Migration Velocity (Daily)</h3>
+            <canvas id="migrationChart" height="80"></canvas>
+        </div>
+    </main>
 
     <script>
-        /**
-         * Updates the progress bar
-         * @param {number} a - Current count
-         * @param {number} b - Overall total
-         */
-        function updateProgress(a, b) {
-            const progressBar = document.getElementById('progress-bar');
-            const progressLabel = document.getElementById('progress-label');
-            const percentageText = document.getElementById('percentage-text');
-
-            // Calculate percentage
-            const percentage = b > 0 ? ((a / b) * 100).toFixed(1) : 0;
-
-            // Update DOM
-            progressLabel.innerText = `Progress: ${a} / ${b}`;
-            progressBar.style.width = percentage + "%";
-            percentageText.innerText = percentage + "%";
-        }
-
-        // Example Usage:
-        // Pass your 'a' and 'b' values here
-        updateProgress(964, 4918);
+        const ctx = document.getElementById('migrationChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Feb 01', 'Feb 02', 'Feb 03', 'Feb 04', 'Feb 05', 'Feb 06'],
+                datasets: [{
+                    label: 'Users Migrated',
+                    data: [120, 280, 450, 610, 820, 964],
+                    borderColor: '#eb5424',
+                    backgroundColor: 'rgba(235, 84, 36, 0.05)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: false } },
+                scales: { 
+                    y: { beginAtZero: true, grid: { color: '#f3f4f6' } },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
     </script>
 </body>
 </html>
