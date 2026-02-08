@@ -3,157 +3,503 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Auth0 Dashboard - Migration Flow</title>
+    <title>Auth0 Australia & NZ Migration Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        .auth0-gradient { background: linear-gradient(135deg, #eb5424 0%, #16214d 100%); }
-        .card { @apply bg-white p-6 rounded-xl shadow-sm border border-gray-100; }
-        .region-badge { @apply px-2 py-1 rounded text-[9px] font-bold uppercase tracking-tight; }
-        .status-migrating { @apply bg-green-100 text-green-700 animate-pulse; }
-        .status-pending { @apply bg-gray-100 text-gray-500; }
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .pulse-dot {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .5; }
+        }
+        
+        .slide-up {
+            animation: slideUp 0.6s ease-out forwards;
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .count-up {
+            font-variant-numeric: tabular-nums;
+        }
+        
+        .bg-grid {
+            background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 0);
+            background-size: 40px 40px;
+        }
+        
+        .state-card {
+            transition: all 0.3s ease;
+        }
+        
+        .state-card:hover {
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        .nz-card {
+            background: linear-gradient(135deg, rgba(20, 184, 166, 0.1) 0%, rgba(99, 102, 241, 0.1) 100%);
+            border: 1px solid rgba(20, 184, 166, 0.3);
+        }
+        
+        .nz-card:hover {
+            background: linear-gradient(135deg, rgba(20, 184, 166, 0.15) 0%, rgba(99, 102, 241, 0.15) 100%);
+        }
+        
+        .active-indicator {
+            animation: activePulse 2s infinite;
+        }
+        
+        @keyframes activePulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); }
+        }
+        
+        .pending-indicator {
+            animation: pendingPulse 2s infinite;
+        }
+        
+        @keyframes pendingPulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(234, 179, 8, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(234, 179, 8, 0); }
+        }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans">
+<body class="bg-slate-900 text-white min-h-screen bg-grid overflow-x-hidden">
+    <!-- Background Effects -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-0 left-1/4 w-96 h-96 bg-indigo-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
+        <div class="absolute top-0 right-1/4 w-96 h-96 bg-purple-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
+        <div class="absolute -bottom-32 left-1/3 w-96 h-96 bg-pink-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
+    </div>
 
-    <nav class="auth0-gradient text-white p-6 shadow-lg">
-        <div class="container mx-auto flex justify-between items-center">
-            <div class="flex items-center gap-4">
-                <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-inner">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 2L3 7V17L12 22L21 17V7L12 2Z" stroke="#eb5424" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
+    <div class="relative z-10 container mx-auto px-4 py-8 max-w-7xl">
+        <!-- Header -->
+        <header class="mb-8 slide-up">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="w-3 h-3 bg-green-400 rounded-full pulse-dot"></div>
+                        <span class="text-green-400 text-sm font-medium tracking-wider uppercase">Migration in Progress</span>
+                    </div>
+                    <h1 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-white via-indigo-200 to-indigo-400 bg-clip-text text-transparent">
+                        Auth0 Australia & NZ Migration
+                    </h1>
+                    <p class="text-slate-400 mt-2 text-lg">Regional Identity Platform Transition</p>
+                </div>
+                <div class="glass-panel rounded-2xl p-4 flex items-center gap-4">
+                    <div class="text-right">
+                        <div class="text-xs text-slate-400 uppercase tracking-wider">Current Date</div>
+                        <div class="text-2xl font-bold text-white" id="currentDate">--</div>
+                    </div>
+                    <div class="h-10 w-px bg-slate-700"></div>
+                    <div class="text-right">
+                        <div class="text-xs text-slate-400 uppercase tracking-wider">Started</div>
+                        <div class="text-lg font-semibold text-indigo-400">Feb 01, 2025</div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Migration Data Block -->
+        <div class="glass-panel rounded-2xl p-8 slide-up mb-6" style="animation-delay: 0.1s">
+            <h3 class="text-lg font-semibold mb-6 text-slate-300">Migration Data</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div>
+                    <label class="block text-sm font-medium text-slate-400 mb-2">Target Total Accounts</label>
+                    <div class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-4 py-3 text-white text-2xl font-bold">
+                        <span id="targetDisplay">4,918</span>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-2">Combined total across all regions</p>
                 </div>
                 <div>
-                    <h1 class="text-2xl font-bold tracking-tight">Auth0 Dashboard</h1>
-                    <p class="text-xs opacity-70 uppercase tracking-widest">Enterprise Migration Monitor</p>
+                    <label class="block text-sm font-medium text-slate-400 mb-2">Total Migrated Accounts</label>
+                    <div class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-4 py-3 text-green-400 text-2xl font-bold">
+                        <span id="migratedDisplay">0</span>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-2">Last updated: <span id="lastUpdated">Just now</span></p>
                 </div>
             </div>
-        </div>
-    </nav>
-
-    <main class="container mx-auto py-8 px-4">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-            <div class="card border-t-4 border-gray-400">
-                <p class="text-gray-500 text-xs font-bold uppercase mb-1">Total Users</p>
-                <h2 class="text-3xl font-black text-gray-800" id="stat-total">0</h2>
-            </div>
-            <div class="card border-t-4 border-green-500">
-                <p class="text-gray-500 text-xs font-bold uppercase mb-1">Migrated</p>
-                <h2 class="text-3xl font-black text-green-600" id="stat-migrated">0</h2>
-            </div>
-            <div class="card border-t-4 border-orange-400">
-                <p class="text-gray-500 text-xs font-bold uppercase mb-1">Pending</p>
-                <h2 class="text-3xl font-black text-orange-500" id="stat-pending">0</h2>
-            </div>
-            <div class="card border-t-4 border-blue-500 bg-blue-50/30">
-                <p class="text-gray-500 text-xs font-bold uppercase mb-1">Migration Timeline</p>
-                <div class="space-y-1">
-                    <div class="flex justify-between text-sm">
-                        <span class="text-gray-400">Started:</span>
-                        <span class="font-bold text-blue-900" id="date-start">2026-02-01</span>
+            
+            <!-- Progress Bar -->
+            <div class="mt-6">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-sm font-medium text-slate-300">Overall Progress</span>
+                    <span class="text-sm font-bold text-white" id="progressPercent">0%</span>
+                </div>
+                <div class="w-full bg-slate-800 rounded-full h-4 overflow-hidden">
+                    <div class="h-full bg-gradient-to-r from-indigo-500 via-purple-500 to-green-500 rounded-full transition-all duration-1000 relative" id="mainProgressBar" style="width: 0%">
+                        <div class="absolute inset-0 bg-white/20 animate-pulse"></div>
                     </div>
-                    <div class="flex justify-between text-sm">
-                        <span class="text-gray-400">Today:</span>
-                        <span class="font-bold text-blue-900" id="date-today">2026-02-06</span>
-                    </div>
-                    <div class="pt-2 border-t border-blue-100 flex justify-between items-baseline">
-                        <span class="text-xs font-bold text-blue-600 uppercase">Elapsed:</span>
-                        <span class="text-2xl font-black text-blue-700" id="days-spent">0 Days</span>
-                    </div>
+                </div>
+                <div class="flex justify-between mt-2 text-xs text-slate-500">
+                    <span>0%</span>
+                    <span id="remainingText">4,918 remaining</span>
+                    <span>100%</span>
                 </div>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-            <div class="card lg:col-span-1 flex flex-col">
-                <h3 class="text-lg font-bold mb-6">Global Completion</h3>
-                <div class="relative pt-1 flex-grow flex flex-col justify-center">
-                    <div class="overflow-hidden h-14 text-xs flex rounded-lg bg-gray-100 border border-gray-200">
-                        <div id="dynamic-progress-bar" style="width: 0%" class="flex flex-col text-center whitespace-nowrap text-white justify-center bg-green-500 animate-pulse font-bold text-xl shadow-lg transition-all duration-1000">
-                            0%
+        <!-- Key Metrics Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <!-- Days Elapsed -->
+            <div class="glass-panel rounded-2xl p-6 slide-up" style="animation-delay: 0.2s">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="p-3 bg-indigo-500/20 rounded-xl">
+                        <svg class="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <span class="text-xs text-slate-400 bg-slate-800 px-2 py-1 rounded-full">Since Feb 01</span>
+                </div>
+                <div class="text-3xl font-bold text-white mb-1 count-up" id="daysElapsed">0</div>
+                <div class="text-sm text-slate-400">Days Elapsed</div>
+            </div>
+
+            <!-- Migrated -->
+            <div class="glass-panel rounded-2xl p-6 slide-up" style="animation-delay: 0.3s">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="p-3 bg-green-500/20 rounded-xl">
+                        <svg class="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <span class="text-xs text-green-400 bg-green-500/10 px-2 py-1 rounded-full" id="migratedBadge">Active</span>
+                </div>
+                <div class="text-3xl font-bold text-white mb-1 count-up" id="migratedCount">0</div>
+                <div class="text-sm text-slate-400">Accounts Migrated</div>
+            </div>
+
+            <!-- Remaining -->
+            <div class="glass-panel rounded-2xl p-6 slide-up" style="animation-delay: 0.4s">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="p-3 bg-orange-500/20 rounded-xl">
+                        <svg class="w-6 h-6 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                </div>
+                <div class="text-3xl font-bold text-white mb-1 count-up" id="remainingCount">0</div>
+                <div class="text-sm text-slate-400">Accounts Remaining</div>
+            </div>
+        </div>
+
+        <!-- Regional Migration Status - Split into Active and Pending -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <!-- Active Regions -->
+            <div class="glass-panel rounded-2xl p-6 slide-up" style="animation-delay: 0.5s">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-3 h-3 bg-green-500 rounded-full active-indicator"></div>
+                    <h3 class="text-lg font-semibold text-slate-300">Active Migration</h3>
+                    <span class="ml-auto text-xs text-green-400 bg-green-500/10 px-2 py-1 rounded-full">In Progress</span>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <!-- Victoria -->
+                    <div class="state-card glass-panel rounded-lg p-4 border-l-4 border-purple-500 flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-2 h-2 bg-green-500 rounded-full active-indicator"></div>
+                            <span class="text-sm font-medium text-white">VIC</span>
+                        </div>
+                        <span class="text-xs text-green-400 font-medium">Active</span>
+                    </div>
+
+                    <!-- Queensland -->
+                    <div class="state-card glass-panel rounded-lg p-4 border-l-4 border-pink-500 flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-2 h-2 bg-green-500 rounded-full active-indicator"></div>
+                            <span class="text-sm font-medium text-white">QLD</span>
+                        </div>
+                        <span class="text-xs text-green-400 font-medium">Active</span>
+                    </div>
+
+                    <!-- Western Australia -->
+                    <div class="state-card glass-panel rounded-lg p-4 border-l-4 border-orange-500 flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-2 h-2 bg-green-500 rounded-full active-indicator"></div>
+                            <span class="text-sm font-medium text-white">WA</span>
+                        </div>
+                        <span class="text-xs text-green-400 font-medium">Active</span>
+                    </div>
+
+                    <!-- South Australia -->
+                    <div class="state-card glass-panel rounded-lg p-4 border-l-4 border-yellow-500 flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-2 h-2 bg-green-500 rounded-full active-indicator"></div>
+                            <span class="text-sm font-medium text-white">SA</span>
+                        </div>
+                        <span class="text-xs text-green-400 font-medium">Active</span>
+                    </div>
+
+                    <!-- Northern Territory -->
+                    <div class="state-card glass-panel rounded-lg p-4 border-l-4 border-red-500 flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-2 h-2 bg-green-500 rounded-full active-indicator"></div>
+                            <span class="text-sm font-medium text-white">NT</span>
+                        </div>
+                        <span class="text-xs text-green-400 font-medium">Active</span>
+                    </div>
+
+                    <!-- Tasmania -->
+                    <div class="state-card glass-panel rounded-lg p-4 border-l-4 border-cyan-500 flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-2 h-2 bg-green-500 rounded-full active-indicator"></div>
+                            <span class="text-sm font-medium text-white">TAS</span>
+                        </div>
+                        <span class="text-xs text-green-400 font-medium">Active</span>
+                    </div>
+
+                    <!-- New Zealand -->
+                    <div class="state-card nz-card rounded-lg p-4 border-l-4 border-teal-500 flex items-center justify-between col-span-2">
+                        <div class="flex items-center gap-3">
+                            <div class="w-2 h-2 bg-green-500 rounded-full active-indicator"></div>
+                            <span class="text-sm font-medium text-white">NZ</span>
+                            <span class="text-xs text-teal-400 border border-teal-500/30 px-2 py-0.5 rounded">International</span>
+                        </div>
+                        <span class="text-xs text-teal-400 font-medium">Active</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pending Regions -->
+            <div class="glass-panel rounded-2xl p-6 slide-up" style="animation-delay: 0.6s">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-3 h-3 bg-yellow-500 rounded-full pending-indicator"></div>
+                    <h3 class="text-lg font-semibold text-slate-300">Pending Migration</h3>
+                    <span class="ml-auto text-xs text-yellow-400 bg-yellow-500/10 px-2 py-1 rounded-full">Scheduled</span>
+                </div>
+
+                <div class="space-y-3">
+                    <!-- New South Wales -->
+                    <div class="state-card glass-panel rounded-lg p-4 border-l-4 border-indigo-500 flex items-center justify-between bg-yellow-500/5">
+                        <div class="flex items-center gap-3">
+                            <div class="w-2 h-2 bg-yellow-500 rounded-full pending-indicator"></div>
+                            <div>
+                                <span class="text-sm font-medium text-white block">NSW</span>
+                                <span class="text-xs text-slate-400">New South Wales</span>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-xs text-yellow-400 font-medium block">Pending</span>
+                            <span class="text-xs text-slate-500">Scheduled next</span>
                         </div>
                     </div>
-                    <div class="mt-8 space-y-4">
-                        <div class="flex justify-between text-sm border-b pb-2">
-                            <span class="text-gray-500">Migration Progress</span>
-                            <span class="font-semibold text-gray-700" id="progress-fraction">0 / 0</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <div class="card lg:col-span-2">
-                <h3 class="text-lg font-bold mb-6 underline decoration-orange-500 decoration-4 underline-offset-8">Region Status</h3>
-                <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                    <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
-                        <div class="flex justify-between items-center mb-2"><span class="font-bold text-gray-700">VIC</span><span class="region-badge status-migrating">IN PROGRESS</span></div>
-                        <div class="w-full bg-gray-200 h-1.5 rounded-full"><div class="bg-green-500 h-1.5 rounded-full" style="width: 100%"></div></div>
-                    </div>
-                    <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
-                        <div class="flex justify-between items-center mb-2"><span class="font-bold text-gray-700">ACT</span><span class="region-badge status-migrating">IN PROGRESS</span></div>
-                        <div class="w-full bg-gray-200 h-1.5 rounded-full"><div class="bg-green-500 h-1.5 rounded-full" style="width: 100%"></div></div>
-                    </div>
-                    <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
-                        <div class="flex justify-between items-center mb-2"><span class="font-bold text-gray-700">WA</span><span class="region-badge status-migrating">IN PROGRESS</span></div>
-                        <div class="w-full bg-gray-200 h-1.5 rounded-full"><div class="bg-green-500 h-1.5 rounded-full" style="width: 100%"></div></div>
-                    </div>
-                    <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
-                        <div class="flex justify-between items-center mb-2"><span class="font-bold text-gray-700">QLD</span><span class="region-badge status-migrating">IN PROGRESS</span></div>
-                        <div class="w-full bg-gray-200 h-1.5 rounded-full"><div class="bg-green-500 h-1.5 rounded-full" style="width: 100%"></div></div>
-                    </div>
-                    <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
-                        <div class="flex justify-between items-center mb-2"><span class="font-bold text-gray-700">NT</span><span class="region-badge status-migrating">IN PROGRESS</span></div>
-                        <div class="w-full bg-gray-200 h-1.5 rounded-full"><div class="bg-green-500 h-1.5 rounded-full" style="width: 100%"></div></div>
-                    </div>
-                    <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
-                        <div class="flex justify-between items-center mb-2"><span class="font-bold text-gray-700">NZ</span><span class="region-badge status-migrating">IN PROGRESS</span></div>
-                        <div class="w-full bg-gray-200 h-1.5 rounded-full"><div class="bg-green-500 h-1.5 rounded-full" style="width: 100%"></div></div>
-                    </div>
-                    <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
-                        <div class="flex justify-between items-center mb-2"><span class="font-bold text-gray-700">TAS</span><span class="region-badge status-migrating">IN PROGRESS</span></div>
-                        <div class="w-full bg-gray-200 h-1.5 rounded-full"><div class="bg-green-500 h-1.5 rounded-full" style="width: 100%"></div></div>
-                    </div>
-                    <div class="p-4 bg-gray-50 rounded-lg border border-gray-200">
-                        <div class="flex justify-between items-center mb-2"><span class="font-bold text-gray-700">NSW</span><span class="region-badge bg-gray-100 text-gray-500">PENDING</span></div>
-                        <div class="w-full bg-gray-200 h-1.5 rounded-full"><div class="bg-gray-400 h-1.5 rounded-full" style="width: 0%"></div></div>
+                    <!-- Empty state placeholder -->
+                    <div class="border-2 border-dashed border-slate-700 rounded-lg p-8 text-center mt-4">
+                        <svg class="w-8 h-8 text-slate-600 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <p class="text-sm text-slate-500">Additional regions will appear here when scheduled</p>
                     </div>
                 </div>
             </div>
         </div>
-    </main>
+
+        <!-- Timeline -->
+        <div class="glass-panel rounded-2xl p-6 slide-up" style="animation-delay: 0.7s">
+            <h3 class="text-lg font-semibold mb-6 text-slate-300">Migration Timeline</h3>
+            <div class="relative">
+                <div class="absolute left-4 top-0 bottom-0 w-0.5 bg-slate-700"></div>
+                
+                <div class="relative flex items-start mb-8">
+                    <div class="absolute left-2 w-4 h-4 bg-indigo-500 rounded-full border-4 border-slate-900"></div>
+                    <div class="ml-12">
+                        <div class="text-sm text-indigo-400 font-medium">February 1, 2025</div>
+                        <div class="text-white font-medium">Migration Started</div>
+                        <div class="text-sm text-slate-500 mt-1">Project kickoff across Australia and New Zealand regions</div>
+                    </div>
+                </div>
+
+                <div class="relative flex items-start mb-8">
+                    <div class="absolute left-2 w-4 h-4 bg-blue-500 rounded-full border-4 border-slate-900"></div>
+                    <div class="ml-12">
+                        <div class="text-sm text-blue-400 font-medium" id="currentDateTimeline">Today</div>
+                        <div class="text-white font-medium">Current Progress</div>
+                        <div class="text-sm text-slate-500 mt-1" id="currentProgressText">0 accounts migrated across all regions</div>
+                    </div>
+                </div>
+
+                <div class="relative flex items-start opacity-50">
+                    <div class="absolute left-2 w-4 h-4 bg-slate-600 rounded-full border-4 border-slate-900"></div>
+                    <div class="ml-12">
+                        <div class="text-sm text-slate-500 font-medium" id="projectedEndDate">TBD</div>
+                        <div class="text-slate-400 font-medium">Projected Completion</div>
+                        <div class="text-sm text-slate-600 mt-1">Estimated based on current migration velocity</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="mt-8 text-center text-slate-600 text-sm slide-up" style="animation-delay: 0.8s">
+            <p>Auth0 Australia & New Zealand Migration Dashboard</p>
+        </footer>
+    </div>
+
+    <!-- Hidden inputs for data storage -->
+    <input type="hidden" id="targetInput" value="4918">
+    <input type="hidden" id="migratedInput" value="0">
 
     <script>
-        // CONFIGURATION
-        const migratedCount = 1248; 
-        const totalCount = 4918;
-        const startDateStr = "2026-02-01";
-        const todayDateStr = "2026-02-06";
+        // Configuration
+        const START_DATE = new Date('2025-02-01');
+        
+        // Regional Data Configuration
+        const regionalData = {
+            nsw: { name: 'New South Wales', total: 1500, migrated: 0, color: 'indigo', status: 'pending' },
+            vic: { name: 'Victoria', total: 1200, migrated: 0, color: 'purple', status: 'active' },
+            qld: { name: 'Queensland', total: 800, migrated: 0, color: 'pink', status: 'active' },
+            wa: { name: 'Western Australia', total: 600, migrated: 0, color: 'orange', status: 'active' },
+            sa: { name: 'South Australia', total: 400, migrated: 0, color: 'yellow', status: 'active' },
+            nt: { name: 'Northern Territory', total: 218, migrated: 0, color: 'red', status: 'active' },
+            tas: { name: 'Tasmania', total: 200, migrated: 0, color: 'cyan', status: 'active' },
+            nz: { name: 'New Zealand', total: 1000, migrated: 0, color: 'teal', status: 'active' }
+        };
 
-        function initDashboard() {
-            // Calculate percentage
-            const percentage = ((migratedCount / totalCount) * 100).toFixed(1);
-            const pendingCount = totalCount - migratedCount;
-
-            const start = new Date(startDateStr);
-            const today = new Date(todayDateStr);
-            const diffTime = Math.abs(today - start);
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-            document.getElementById('stat-total').innerText = totalCount.toLocaleString();
-            document.getElementById('stat-migrated').innerText = migratedCount.toLocaleString();
-            document.getElementById('stat-pending').innerText = pendingCount.toLocaleString();
-            document.getElementById('days-spent').innerText = `${diffDays} Days`;
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCurrentDate();
+            calculateDaysElapsed();
+            initializeData();
+            updateDashboard();
             
-            // Update progress bar
-            const progressBar = document.getElementById('dynamic-progress-bar');
-            progressBar.style.width = `${percentage}%`;
-            progressBar.innerText = `${percentage}%`;
-            
-            document.getElementById('progress-fraction').innerText = `${migratedCount.toLocaleString()} / ${totalCount.toLocaleString()}`;
+            // Update every minute
+            setInterval(updateCurrentDate, 60000);
+        });
+
+        function updateCurrentDate() {
+            const now = new Date();
+            const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
+            document.getElementById('currentDate').textContent = now.toLocaleDateString('en-AU', options);
+            document.getElementById('currentDateTimeline').textContent = now.toLocaleDateString('en-AU', { month: 'short', day: 'numeric', year: 'numeric' });
         }
 
-        window.onload = initDashboard;
+        function calculateDaysElapsed() {
+            const now = new Date();
+            const diffTime = Math.abs(now - START_DATE);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            animateValue('daysElapsed', 0, diffDays, 1000);
+            return diffDays;
+        }
+
+        function initializeData() {
+            // Set fixed total
+            const total = 4918;
+            document.getElementById('targetInput').value = total;
+            
+            // Example: 65% complete (excluding NSW which is pending)
+            const activeRegionsTotal = total - regionalData.nsw.total; // 3418
+            const totalMigrated = Math.floor(activeRegionsTotal * 0.65); // ~2222
+            document.getElementById('migratedInput').value = totalMigrated;
+            
+            // Distribute across active regions only
+            regionalData.vic.migrated = Math.floor(totalMigrated * 0.30);
+            regionalData.qld.migrated = Math.floor(totalMigrated * 0.20);
+            regionalData.wa.migrated = Math.floor(totalMigrated * 0.15);
+            regionalData.sa.migrated = Math.floor(totalMigrated * 0.10);
+            regionalData.nt.migrated = Math.floor(totalMigrated * 0.05);
+            regionalData.tas.migrated = Math.floor(totalMigrated * 0.05);
+            regionalData.nz.migrated = Math.floor(totalMigrated * 0.25);
+            regionalData.nsw.migrated = 0; // NSW is pending
+        }
+
+        function updateDashboard() {
+            const total = 4918; // Fixed total
+            const migrated = parseInt(document.getElementById('migratedInput').value) || 0;
+            const remaining = Math.max(0, total - migrated);
+            const percentage = total > 0 ? Math.min(100, Math.round((migrated / total) * 100)) : 0;
+            const daysElapsed = calculateDaysElapsed();
+
+            // Update main counts
+            document.getElementById('targetDisplay').textContent = total.toLocaleString();
+            document.getElementById('migratedDisplay').textContent = migrated.toLocaleString();
+            animateValue('totalAccounts', 0, total, 800);
+            animateValue('migratedCount', 0, migrated, 800);
+            animateValue('remainingCount', 0, remaining, 800);
+            
+            // Update percentages and progress bar
+            document.getElementById('progressPercent').textContent = percentage + '%';
+            document.getElementById('mainProgressBar').style.width = percentage + '%';
+            document.getElementById('remainingText').textContent = `${remaining.toLocaleString()} remaining`;
+            
+            // Update timeline text
+            document.getElementById('currentProgressText').textContent = `${migrated.toLocaleString()} accounts migrated across active regions (${percentage}%)`;
+
+            // Calculate metrics
+            const dailyAvg = daysElapsed > 0 ? Math.round(migrated / daysElapsed) : 0;
+
+            // Estimated completion
+            if (dailyAvg > 0 && remaining > 0) {
+                const daysRemaining = Math.ceil(remaining / dailyAvg);
+                const completionDate = new Date();
+                completionDate.setDate(completionDate.getDate() + daysRemaining);
+                document.getElementById('projectedEndDate').textContent = completionDate.toLocaleDateString('en-AU', { month: 'long', day: 'numeric', year: 'numeric' });
+            } else if (remaining === 0) {
+                document.getElementById('projectedEndDate').textContent = 'Completed';
+            } else {
+                document.getElementById('projectedEndDate').textContent = 'TBD';
+            }
+
+            // Update last updated time
+            const now = new Date();
+            document.getElementById('lastUpdated').textContent = now.toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit' });
+        }
+
+        function animateValue(id, start, end, duration) {
+            const obj = document.getElementById(id);
+            if (!obj) return;
+            
+            const range = end - start;
+            const minTimer = 50;
+            let stepTime = Math.abs(Math.floor(duration / range));
+            stepTime = Math.max(stepTime, minTimer);
+            let startTime = new Date().getTime();
+            let endTime = startTime + duration;
+            let timer;
+          
+            function run() {
+                let now = new Date().getTime();
+                let remaining = Math.max((endTime - now) / duration, 0);
+                let value = Math.round(end - (remaining * range));
+                obj.innerHTML = value.toLocaleString();
+                if (value == end) {
+                    clearInterval(timer);
+                }
+            }
+            
+            timer = setInterval(run, stepTime);
+            run();
+        }
+
+        // Function to update migration numbers (call this with real data)
+        function updateMigrationData(totalMigrated) {
+            document.getElementById('migratedInput').value = totalMigrated;
+            updateDashboard();
+        }
     </script>
 </body>
 </html>
