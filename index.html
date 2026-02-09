@@ -104,14 +104,14 @@
                 <div>
                     <label class="block text-sm font-medium text-slate-400 mb-2">Target Total Accounts</label>
                     <div class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-4 py-3 text-white text-2xl font-bold">
-                        <span id="targetDisplay">4,918</span>
+                        <span id="targetDisplay">7171</span>
                     </div>
                     <p class="text-xs text-slate-500 mt-2">Combined total across all regions</p>
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-slate-400 mb-2">Total Migrated Accounts</label>
                     <div class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-4 py-3 text-green-400 text-2xl font-bold">
-                        <span id="migratedDisplay">1,248</span>
+                        <span id="migratedDisplay">1473</span>
                     </div>
                     <p class="text-xs text-slate-500 mt-2">Last updated: <span id="lastUpdated">Just now</span></p>
                 </div>
@@ -379,8 +379,8 @@
         }
 
         function updateDashboard() {
-            const total = 7171;
-            const migrated = 1473;
+            const total = document.getElementById('targetDisplay');
+            const migrated = document.getElementById('migratedDisplay');
             const remaining = total - migrated;
             const percentage = Math.round((migrated / total) * 100);
             const daysElapsed = calculateDaysElapsed();
