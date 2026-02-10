@@ -127,7 +127,7 @@
             <div class="glass-panel rounded-2xl p-6 state-card au-card" id="regionAU">
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-2xl font-bold text-indigo-300">Australia Total</h2>
-                    <span class="text-4xl font-black text-white" id="totalAU">6719</span>
+                    <span class="text-4xl font-black text-white" id="totalAU">6498</span>
                 </div>
                 <div class="space-y-3">
                     <div class="flex justify-between p-3 bg-slate-900/50 rounded-lg border border-slate-700">
@@ -136,11 +136,11 @@
                     </div>
                     <div class="flex justify-between p-3 bg-slate-900/50 rounded-lg border border-slate-700">
                         <span class="text-slate-300">Staff</span>
-                        <span class="font-semibold text-white">442</span>
+                        <span class="font-semibold text-white">209</span>
                     </div>
                     <div class="flex justify-between p-3 bg-slate-900/50 rounded-lg border border-slate-700">
                         <span class="text-slate-300">Admin</span>
-                        <span class="font-semibold text-white">2129</span>
+                        <span class="font-semibold text-white">2136</span>
                     </div>
                 </div>
             </div>
@@ -340,15 +340,15 @@
         
         // 1. Set Regional Totals (Migrated counts from cards above)
         const REGIONAL_DATA = {
-            nz: 452,
-            au: 6719
+            nz: 453,
+            au: 6498
         };
 
         const DASHBOARD_CONFIG = {
             // Automatically calculate target based on regions
             targetTotal: REGIONAL_DATA.nz + REGIONAL_DATA.au, 
             // Update this number to represent actual completed migrations
-            migratedTotal: 1583, 
+            migratedTotal: 1621, 
             startDate: new Date('2026-02-01')
         };
         // ==========================================
