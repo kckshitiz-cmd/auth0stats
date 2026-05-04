@@ -1,361 +1,380 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Auth0 Australia & NZ Account Migration Dashboard</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        * {
-            font-family: 'Inter', sans-serif;
-        }
-        
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .gradient-text {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .slide-up {
-            animation: slideUp 0.6s ease-out forwards;
-        }
-        
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .count-up {
-            font-variant-numeric: tabular-nums;
-        }
-        
-        .bg-grid {
-            background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 0);
-            background-size: 40px 40px;
-        }
-        
-        .state-card {
-            transition: all 0.3s ease;
-        }
-        
-        .state-card:hover {
-            transform: translateY(-2px);
-            background: rgba(255, 255, 255, 0.08);
-        }
-        
-        .nz-card {
-            background: linear-gradient(135deg, rgba(20, 184, 166, 0.1) 0%, rgba(99, 102, 241, 0.1) 100%);
-            border: 1px solid rgba(20, 184, 166, 0.3);
-        }
-        
-        .nz-card:hover {
-            background: linear-gradient(135deg, rgba(20, 184, 166, 0.15) 0%, rgba(99, 102, 241, 0.15) 100%);
-        }
-        
-        .au-card {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
-            border: 1px solid rgba(99, 102, 241, 0.3);
-        }
-        
-        /* Progress Circle Styles */
-        .progress-ring__circle {
-            transition: stroke-dashoffset 0.35s;
-            transform: rotate(-90deg);
-            transform-origin: 50% 50%;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Auth0 Australia & NZ Account Migration Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'Inter', sans-serif; }
+    .glass-panel { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+    .slide-up { animation: slideUp 0.6s ease-out forwards; }
+    @keyframes slideUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+    .bg-grid { background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 0); background-size: 40px 40px; }
+    .state-card { transition: all 0.3s ease; }
+    .state-card:hover { transform: translateY(-2px); background: rgba(255,255,255,0.08); }
+    .nz-card { background: linear-gradient(135deg, rgba(20,184,166,0.1) 0%, rgba(99,102,241,0.1) 100%); border: 1px solid rgba(20,184,166,0.3); }
+    .nz-card:hover { background: linear-gradient(135deg, rgba(20,184,166,0.15) 0%, rgba(99,102,241,0.15) 100%); }
+    .au-card { background: linear-gradient(135deg, rgba(99,102,241,0.1) 0%, rgba(139,92,246,0.1) 100%); border: 1px solid rgba(99,102,241,0.3); }
+    .progress-ring__circle { transition: stroke-dashoffset 0.35s; transform: rotate(-90deg); transform-origin: 50% 50%; }
+    .progress-bar { transition: width 1s ease-in-out; }
+  </style>
 </head>
 <body class="bg-slate-900 text-white min-h-screen bg-grid overflow-x-hidden">
-    <div class="fixed inset-0 overflow-hidden pointer-events-none">
-        <div class="absolute top-0 left-1/4 w-96 h-96 bg-indigo-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
-        <div class="absolute top-0 right-1/4 w-96 h-96 bg-purple-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
-        <div class="absolute -bottom-32 left-1/3 w-96 h-96 bg-pink-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
+
+  <!-- Background blobs -->
+  <div class="fixed inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute top-0 left-1/4 w-96 h-96 bg-indigo-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
+    <div class="absolute top-0 right-1/4 w-96 h-96 bg-purple-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
+    <div class="absolute -bottom-32 left-1/3 w-96 h-96 bg-pink-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
+  </div>
+
+  <div class="relative z-10 container mx-auto px-4 py-8 max-w-7xl">
+
+    <!-- HEADER -->
+    <header class="mb-8 slide-up">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <div class="flex items-center gap-3 mb-2">
+            <div class="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+            <span class="text-green-400 text-sm font-medium tracking-wider uppercase">Migration in Progress</span>
+          </div>
+          <h1 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-white via-indigo-200 to-indigo-400 bg-clip-text text-transparent">
+            Auth0 Australia & NZ Migration
+          </h1>
+          <p class="text-slate-400 mt-2 text-lg">Enterprise Broker, Admin and Staff Account Migration Monitor</p>
+        </div>
+        <div class="glass-panel rounded-2xl p-4 flex items-center gap-4">
+          <div class="text-right">
+            <div class="text-xs text-slate-400 uppercase tracking-wider">Current Date</div>
+            <div class="text-2xl font-bold text-white" id="currentDate">--</div>
+          </div>
+          <div class="h-10 w-px bg-slate-700"></div>
+          <div class="text-right">
+            <div class="text-xs text-slate-400 uppercase tracking-wider">Started</div>
+            <div class="text-lg font-semibold text-indigo-400">Feb 01, 2026</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- OVERALL SUMMARY CARDS -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8 slide-up" style="animation-delay:0.05s">
+      <div class="glass-panel rounded-2xl p-5 text-center">
+        <div class="text-xs text-slate-400 uppercase tracking-wider mb-1">Total Target</div>
+        <div class="text-3xl font-black text-white" id="summaryTarget">—</div>
+      </div>
+      <div class="glass-panel rounded-2xl p-5 text-center">
+        <div class="text-xs text-slate-400 uppercase tracking-wider mb-1">Migrated</div>
+        <div class="text-3xl font-black text-green-400" id="summaryMigrated">—</div>
+      </div>
+      <div class="glass-panel rounded-2xl p-5 text-center">
+        <div class="text-xs text-slate-400 uppercase tracking-wider mb-1">Remaining</div>
+        <div class="text-3xl font-black text-orange-400" id="summaryRemaining">—</div>
+      </div>
+      <div class="glass-panel rounded-2xl p-5 text-center">
+        <div class="text-xs text-slate-400 uppercase tracking-wider mb-1">Days Elapsed</div>
+        <div class="text-3xl font-black text-indigo-400" id="summaryDays">—</div>
+      </div>
     </div>
 
-    <div class="relative z-10 container mx-auto px-4 py-8 max-w-7xl">
-        <header class="mb-8 slide-up">
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                <div>
-                    <div class="flex items-center gap-3 mb-2">
-                        <div class="w-3 h-3 bg-green-400 rounded-full"></div>
-                        <span class="text-green-400 text-sm font-medium tracking-wider uppercase">Migration in Progress</span>
-                    </div>
-                    <h1 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-white via-indigo-200 to-indigo-400 bg-clip-text text-transparent">
-                        Auth0 Australia & NZ Migration
-                    </h1>
-                    <p class="text-slate-400 mt-2 text-lg">Enterprise Broker, Admin and Staff Account Migration Monitor</p>
-                </div>
-                <div class="glass-panel rounded-2xl p-4 flex items-center gap-4">
-                    <div class="text-right">
-                        <div class="text-xs text-slate-400 uppercase tracking-wider">Current Date</div>
-                        <div class="text-2xl font-bold text-white" id="currentDate">--</div>
-                    </div>
-                    <div class="h-10 w-px bg-slate-700"></div>
-                    <div class="text-right">
-                        <div class="text-xs text-slate-400 uppercase tracking-wider">Started</div>
-                        <div class="text-lg font-semibold text-indigo-400">Feb 01, 2026</div>
-                    </div>
-                </div>
-            </div>
-        </header>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 slide-up" style="animation-delay: 0.1s">
-            <div class="glass-panel rounded-2xl p-6 state-card nz-card" id="regionNZ">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-2xl font-bold text-teal-300">New Zealand Total</h2>
-                    <span class="text-4xl font-black text-white" id="totalNZ">453</span>
-                </div>
-                <div class="space-y-3">
-                    <div class="flex justify-between p-3 bg-slate-900/50 rounded-lg border border-slate-700">
-                        <span class="text-slate-300">Broker Migrated</span>
-                        <span class="font-semibold text-white">123/133</span>
-                    </div>
-                    <div class="flex justify-between p-3 bg-slate-900/50 rounded-lg border border-slate-700">
-                        <span class="text-slate-300">Staff Migrated</span>
-                        <span class="font-semibold text-white">64/146</span>
-                    </div>
-                    <div class="flex justify-between p-3 bg-slate-900/50 rounded-lg border border-slate-700">
-                        <span class="text-slate-300">Branch Admins Migrated</span>
-                        <span class="font-semibold text-white">48/52</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="glass-panel rounded-2xl p-6 state-card au-card" id="regionAU">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-2xl font-bold text-indigo-300">Australia Total</h2>
-                    <span class="text-4xl font-black text-white" id="totalAU">6498</span>
-                </div>
-                <div class="space-y-3">
-                    <div class="flex justify-between p-3 bg-slate-900/50 rounded-lg border border-slate-700">
-                        <span class="text-slate-300">Broker Migrated</span>
-                        <span class="font-semibold text-white">3325/3905</span>
-                    </div>
-                    <div class="flex justify-between p-3 bg-slate-900/50 rounded-lg border border-slate-700">
-                        <span class="text-slate-300">Staff Migrated</span>
-                        <span class="font-semibold text-white">176/193</span>
-                    </div>
-                    <div class="flex justify-between p-3 bg-slate-900/50 rounded-lg border border-slate-700">
-                        <span class="text-slate-300">Branch Admin Migrated</span>
-                        <span class="font-semibold text-white">838/1280</span>
-                    </div>
-                </div>
-            </div>
+    <!-- OVERALL PROGRESS + CIRCLE -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8 slide-up" style="animation-delay:0.1s">
+      <div class="glass-panel rounded-2xl p-8 lg:col-span-2">
+        <h3 class="text-lg font-semibold mb-6 text-slate-300">Overall Migration Progress</h3>
+        <div class="w-full bg-slate-800 rounded-full h-8 overflow-hidden mb-2 relative">
+          <div class="h-full bg-gradient-to-r from-indigo-500 via-purple-500 to-green-500 rounded-full progress-bar flex items-center justify-center" id="mainProgressBar" style="width:0%">
+            <span class="text-xs font-bold text-white drop-shadow-md" id="barPercent">0%</span>
+          </div>
+        </div>
+        <div class="flex justify-between text-xs text-slate-500 mb-6">
+          <span>0</span><span id="targetDisplay">0</span>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8 slide-up" style="animation-delay: 0.2s">
-            <div class="glass-panel rounded-2xl p-8 lg:col-span-2">
-                <h3 class="text-lg font-semibold mb-6 text-slate-300">Overall Progress</h3>
-                <div class="flex justify-between items-center mb-4">
-                    <span class="text-sm font-medium text-slate-300">Total Migrated</span>
-                    <span class="text-4xl font-bold text-white" id="migratedDisplay">0</span>
-                </div>
-                <div class="w-full bg-slate-800 rounded-full h-8 overflow-hidden mb-6 relative">
-                    <div class="h-full bg-gradient-to-r from-indigo-500 via-purple-500 to-green-500 rounded-full transition-all duration-1000 flex items-center justify-center" id="mainProgressBar" style="width: 0%">
-                        <span class="text-xs font-bold text-white drop-shadow-md" id="barPercent">0%</span>
-                    </div>
-                </div>
-                <div class="grid grid-cols-2 gap-4 text-center">
-                    <div class="bg-slate-900/50 p-4 rounded-xl border border-slate-700">
-                        <div class="text-xs text-slate-400 uppercase">Target</div>
-                        <div class="text-xl font-bold text-white" id="targetDisplay">0</div>
-                    </div>
-                    <div class="bg-slate-900/50 p-4 rounded-xl border border-slate-700">
-                        <div class="text-xs text-slate-400 uppercase">Remaining</div>
-                        <div class="text-xl font-bold text-orange-400" id="remainingText">0</div>
-                    </div>
-                </div>
+        <!-- COMBINED PROGRESS BARS -->
+        <div class="space-y-4">
+          <div>
+            <div class="flex justify-between text-sm mb-1">
+              <span class="text-slate-300 font-medium">🧑‍💼 Brokers (AU + NZ)</span>
+              <span class="text-white font-semibold" id="brokerLabel">—</span>
             </div>
-            
-            <div class="glass-panel rounded-2xl p-6 flex flex-col items-center justify-center">
-                <h3 class="text-sm font-semibold mb-4 text-slate-400">Completion Percentage</h3>
-                <div class="relative flex items-center justify-center w-40 h-40">
-                    <svg class="w-full h-full" viewBox="0 0 36 36">
-                        <path class="text-slate-700" stroke-width="3" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                        <path class="text-green-500 progress-ring__circle" stroke-width="3" stroke-dasharray="0, 100" stroke-linecap="round" stroke="currentColor" fill="none" id="progressCircle" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                    </svg>
-                    <div class="absolute text-center">
-                        <span class="text-3xl font-bold text-white" id="progressPercent">0%</span>
-                    </div>
-                </div>
+            <div class="w-full bg-slate-800 rounded-full h-4 overflow-hidden">
+              <div class="h-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full progress-bar flex items-center justify-end pr-2" id="brokerBar" style="width:0%">
+                <span class="text-xs font-bold text-white" id="brokerPct">0%</span>
+              </div>
             </div>
+          </div>
+          <div>
+            <div class="flex justify-between text-sm mb-1">
+              <span class="text-slate-300 font-medium">👥 Staff (AU + NZ)</span>
+              <span class="text-white font-semibold" id="staffLabel">—</span>
+            </div>
+            <div class="w-full bg-slate-800 rounded-full h-4 overflow-hidden">
+              <div class="h-full bg-gradient-to-r from-pink-500 to-rose-400 rounded-full progress-bar flex items-center justify-end pr-2" id="staffBar" style="width:0%">
+                <span class="text-xs font-bold text-white" id="staffPct">0%</span>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="flex justify-between text-sm mb-1">
+              <span class="text-slate-300 font-medium">🏢 Branch Admins (AU + NZ)</span>
+              <span class="text-white font-semibold" id="adminLabel">—</span>
+            </div>
+            <div class="w-full bg-slate-800 rounded-full h-4 overflow-hidden">
+              <div class="h-full bg-gradient-to-r from-teal-500 to-cyan-400 rounded-full progress-bar flex items-center justify-end pr-2" id="adminBar" style="width:0%">
+                <span class="text-xs font-bold text-white" id="adminPct">0%</span>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-            <div class="glass-panel rounded-2xl p-6 slide-up" style="animation-delay: 0.3s">
-                <div class="flex justify-between items-start mb-4">
-                    <div class="p-3 bg-indigo-500/20 rounded-xl">
-                        <svg class="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                    </div>
-                    <span class="text-xs text-slate-400 bg-slate-800 px-2 py-1 rounded-full">Since Feb 01, 2026</span>
-                </div>
-                <div class="text-3xl font-bold text-white mb-1 count-up" id="daysElapsed">0</div>
-                <div class="text-sm text-slate-400">Days Elapsed</div>
-            </div>
-
-            <div class="glass-panel rounded-2xl p-6 slide-up" style="animation-delay: 0.4s">
-                <div class="flex justify-between items-start mb-4">
-                    <div class="p-3 bg-green-500/20 rounded-xl">
-                        <svg class="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                    </div>
-                    <span class="text-xs text-green-400 bg-green-500/10 px-2 py-1 rounded-full" id="migratedBadge">Active</span>
-                </div>
-                <div class="text-3xl font-bold text-white mb-1 count-up" id="migratedCount">0</div>
-                <div class="text-sm text-slate-400">Accounts Migrated</div>
-            </div>
+      <div class="glass-panel rounded-2xl p-6 flex flex-col items-center justify-center">
+        <h3 class="text-sm font-semibold mb-4 text-slate-400">Overall Completion</h3>
+        <div class="relative flex items-center justify-center w-40 h-40">
+          <svg class="w-full h-full" viewBox="0 0 36 36">
+            <path class="text-slate-700" stroke-width="3" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+            <path class="text-green-500 progress-ring__circle" stroke-width="3" stroke-dasharray="0,100" stroke-linecap="round" stroke="currentColor" fill="none" id="progressCircle" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+          </svg>
+          <div class="absolute text-center">
+            <span class="text-3xl font-bold text-white" id="progressPercent">0%</span>
+          </div>
         </div>
-
-        <div class="glass-panel rounded-2xl p-6 slide-up mb-8" style="animation-delay: 0.5s">
-            <div class="flex items-center gap-3 mb-6">
-                <div class="w-3 h-3 bg-green-500 rounded-full"></div>
-                <h3 class="text-lg font-semibold text-slate-300">Regional Status</h3>
-                <span class="ml-auto text-xs text-green-400 bg-green-500/10 px-2 py-1 rounded-full">In Progress</span>
-            </div>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                <div class="state-card glass-panel rounded-lg p-3 border-l-4 border-purple-500">
-                    <div class="flex items-center gap-2"><div class="w-2 h-2 bg-green-500 rounded-full"></div><span class="text-sm font-medium text-white">Victoria</span></div>
-                </div>
-                <div class="state-card glass-panel rounded-lg p-3 border-l-4 border-pink-500">
-                    <div class="flex items-center gap-2"><div class="w-2 h-2 bg-green-500 rounded-full"></div><span class="text-sm font-medium text-white">Queensland</span></div>
-                </div>
-                <div class="state-card glass-panel rounded-lg p-3 border-l-4 border-orange-500">
-                    <div class="flex items-center gap-2"><div class="w-2 h-2 bg-green-500 rounded-full"></div><span class="text-sm font-medium text-white">WA</span></div>
-                </div>
-                <div class="state-card glass-panel rounded-lg p-3 border-l-4 border-yellow-500">
-                    <div class="flex items-center gap-2"><div class="w-2 h-2 bg-green-500 rounded-full"></div><span class="text-sm font-medium text-white">SA</span></div>
-                </div>
-                <div class="state-card glass-panel rounded-lg p-3 border-l-4 border-red-500">
-                    <div class="flex items-center gap-2"><div class="w-2 h-2 bg-green-500 rounded-full"></div><span class="text-sm font-medium text-white">NT</span></div>
-                </div>
-                <div class="state-card glass-panel rounded-lg p-3 border-l-4 border-cyan-500">
-                    <div class="flex items-center gap-2"><div class="w-2 h-2 bg-green-500 rounded-full"></div><span class="text-sm font-medium text-white">Tasmania</span></div>
-                </div>
-                <div class="state-card glass-panel rounded-lg p-3 border-l-4 border-indigo-500">
-                    <div class="flex items-center gap-2"><div class="w-2 h-2 bg-yellow-500 rounded-full"></div><span class="text-sm font-medium text-white">NSW</span></div>
-                </div>
-                <div class="state-card nz-card rounded-lg p-3 border-l-4 border-teal-500">
-                    <div class="flex items-center gap-2"><div class="w-2 h-2 bg-green-500 rounded-full"></div><span class="text-sm font-medium text-white">NZ</span></div>
-                </div>
-            </div>
+        <div class="mt-4 w-full space-y-2 text-xs">
+          <div class="flex justify-between items-center">
+            <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 inline-block"></span> Brokers</span>
+            <span class="text-white font-semibold" id="brokerPctSide">0%</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-gradient-to-r from-pink-500 to-rose-400 inline-block"></span> Staff</span>
+            <span class="text-white font-semibold" id="staffPctSide">0%</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-gradient-to-r from-teal-500 to-cyan-400 inline-block"></span> Branch Admins</span>
+            <span class="text-white font-semibold" id="adminPctSide">0%</span>
+          </div>
         </div>
-
-        <div class="glass-panel rounded-2xl p-6 slide-up" style="animation-delay: 0.6s">
-            <h3 class="text-lg font-semibold mb-6 text-slate-300">Migration Timeline</h3>
-            <div class="relative">
-                <div class="absolute left-4 top-0 bottom-0 w-0.5 bg-slate-700"></div>
-                
-                <div class="relative flex items-start mb-8">
-                    <div class="absolute left-2 w-4 h-4 bg-indigo-500 rounded-full border-4 border-slate-900"></div>
-                    <div class="ml-12">
-                        <div class="text-sm text-indigo-400 font-medium">February 1, 2026</div>
-                        <div class="text-white font-medium">Migration Started</div>
-                    </div>
-                </div>
-
-                <div class="relative flex items-start mb-8">
-                    <div class="absolute left-2 w-4 h-4 bg-blue-500 rounded-full border-4 border-slate-900"></div>
-                    <div class="ml-12">
-                        <div class="text-sm text-blue-400 font-medium" id="currentDateTimeline">Today</div>
-                        <div class="text-white font-medium">Current Progress</div>
-                        <div class="text-sm text-slate-500 mt-1" id="currentProgressText">--</div>
-                    </div>
-                </div>
-
-                <div class="relative flex items-start opacity-50">
-                    <div class="absolute left-2 w-4 h-4 bg-slate-600 rounded-full border-4 border-slate-900"></div>
-                    <div class="ml-12">
-                        <div class="text-sm text-slate-500 font-medium" id="projectedEndDate">TBD</div>
-                        <div class="text-slate-400 font-medium">Projected Completion</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <footer class="mt-8 text-center text-slate-600 text-sm slide-up" style="animation-delay: 0.7s">
-            <p>Auth0 Australia & New Zealand Migration Dashboard</p>
-        </footer>
+      </div>
     </div>
 
-    <script>
-        // ==========================================
-        // CONFIGURATION
-        // ==========================================
-        const REGIONAL_DATA = {
-            nz: 133,
-            au: 3899
-        };
+    <!-- NZ + AU REGION CARDS -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 slide-up" style="animation-delay:0.2s">
 
-        const DASHBOARD_CONFIG = {
-            targetTotal: REGIONAL_DATA.nz + REGIONAL_DATA.au, 
-            migratedTotal: 3416, 
-            startDate: new Date('2026-02-01')
-        };
-        // ==========================================
+      <!-- NZ -->
+      <div class="glass-panel rounded-2xl p-6 state-card nz-card">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-2xl font-bold text-teal-300">🇳🇿 New Zealand</h2>
+          <span class="text-4xl font-black text-white">331</span>
+        </div>
+        <div class="space-y-4">
+          <div>
+            <div class="flex justify-between text-sm mb-1">
+              <span class="text-slate-300">Broker Migrated</span>
+              <span class="font-semibold text-white">123 / 133</span>
+            </div>
+            <div class="w-full bg-slate-800 rounded-full h-3 overflow-hidden">
+              <div class="h-full bg-indigo-500 rounded-full progress-bar" style="width:92%"></div>
+            </div>
+            <div class="text-right text-xs text-slate-400 mt-0.5">92%</div>
+          </div>
+          <div>
+            <div class="flex justify-between text-sm mb-1">
+              <span class="text-slate-300">Staff Migrated</span>
+              <span class="font-semibold text-white">64 / 146</span>
+            </div>
+            <div class="w-full bg-slate-800 rounded-full h-3 overflow-hidden">
+              <div class="h-full bg-pink-500 rounded-full progress-bar" style="width:44%"></div>
+            </div>
+            <div class="text-right text-xs text-slate-400 mt-0.5">44%</div>
+          </div>
+          <div>
+            <div class="flex justify-between text-sm mb-1">
+              <span class="text-slate-300">Branch Admins Migrated</span>
+              <span class="font-semibold text-white">48 / 52</span>
+            </div>
+            <div class="w-full bg-slate-800 rounded-full h-3 overflow-hidden">
+              <div class="h-full bg-teal-500 rounded-full progress-bar" style="width:92%"></div>
+            </div>
+            <div class="text-right text-xs text-slate-400 mt-0.5">92%</div>
+          </div>
+        </div>
+      </div>
 
-        document.addEventListener('DOMContentLoaded', function() {
-            updateDashboard();
-            setInterval(updateDashboard, 60000); // Update every minute
-        });
+      <!-- AU -->
+      <div class="glass-panel rounded-2xl p-6 state-card au-card">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-2xl font-bold text-indigo-300">🇦🇺 Australia</h2>
+          <span class="text-4xl font-black text-white">5378</span>
+        </div>
+        <div class="space-y-4">
+          <div>
+            <div class="flex justify-between text-sm mb-1">
+              <span class="text-slate-300">Broker Migrated</span>
+              <span class="font-semibold text-white">3325 / 3905</span>
+            </div>
+            <div class="w-full bg-slate-800 rounded-full h-3 overflow-hidden">
+              <div class="h-full bg-indigo-500 rounded-full progress-bar" style="width:85%"></div>
+            </div>
+            <div class="text-right text-xs text-slate-400 mt-0.5">85%</div>
+          </div>
+          <div>
+            <div class="flex justify-between text-sm mb-1">
+              <span class="text-slate-300">Staff Migrated</span>
+              <span class="font-semibold text-white">176 / 193</span>
+            </div>
+            <div class="w-full bg-slate-800 rounded-full h-3 overflow-hidden">
+              <div class="h-full bg-pink-500 rounded-full progress-bar" style="width:91%"></div>
+            </div>
+            <div class="text-right text-xs text-slate-400 mt-0.5">91%</div>
+          </div>
+          <div>
+            <div class="flex justify-between text-sm mb-1">
+              <span class="text-slate-300">Branch Admin Migrated</span>
+              <span class="font-semibold text-white">838 / 1280</span>
+            </div>
+            <div class="w-full bg-slate-800 rounded-full h-3 overflow-hidden">
+              <div class="h-full bg-teal-500 rounded-full progress-bar" style="width:65%"></div>
+            </div>
+            <div class="text-right text-xs text-slate-400 mt-0.5">65%</div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-        function updateDashboard() {
-            const { targetTotal, migratedTotal, startDate } = DASHBOARD_CONFIG;
-            const remaining = targetTotal - migratedTotal;
-            const percentage = Math.round((migratedTotal / targetTotal) * 100);
+    <!-- REGIONAL STATUS -->
+    <div class="glass-panel rounded-2xl p-6 slide-up mb-8" style="animation-delay:0.3s">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+        <h3 class="text-lg font-semibold text-slate-300">Regional Status</h3>
+        <span class="ml-auto text-xs text-green-400 bg-green-500/10 px-2 py-1 rounded-full">In Progress</span>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div class="state-card glass-panel rounded-lg p-3 border-l-4 border-purple-500"><div class="flex items-center gap-2"><div class="w-2 h-2 bg-green-500 rounded-full"></div><span class="text-sm font-medium text-white">Victoria</span></div></div>
+        <div class="state-card glass-panel rounded-lg p-3 border-l-4 border-pink-500"><div class="flex items-center gap-2"><div class="w-2 h-2 bg-green-500 rounded-full"></div><span class="text-sm font-medium text-white">Queensland</span></div></div>
+        <div class="state-card glass-panel rounded-lg p-3 border-l-4 border-orange-500"><div class="flex items-center gap-2"><div class="w-2 h-2 bg-green-500 rounded-full"></div><span class="text-sm font-medium text-white">WA</span></div></div>
+        <div class="state-card glass-panel rounded-lg p-3 border-l-4 border-yellow-500"><div class="flex items-center gap-2"><div class="w-2 h-2 bg-green-500 rounded-full"></div><span class="text-sm font-medium text-white">SA</span></div></div>
+        <div class="state-card glass-panel rounded-lg p-3 border-l-4 border-red-500"><div class="flex items-center gap-2"><div class="w-2 h-2 bg-green-500 rounded-full"></div><span class="text-sm font-medium text-white">NT</span></div></div>
+        <div class="state-card glass-panel rounded-lg p-3 border-l-4 border-cyan-500"><div class="flex items-center gap-2"><div class="w-2 h-2 bg-green-500 rounded-full"></div><span class="text-sm font-medium text-white">Tasmania</span></div></div>
+        <div class="state-card glass-panel rounded-lg p-3 border-l-4 border-indigo-500"><div class="flex items-center gap-2"><div class="w-2 h-2 bg-yellow-500 rounded-full"></div><span class="text-sm font-medium text-white">NSW</span></div></div>
+        <div class="state-card nz-card rounded-lg p-3 border-l-4 border-teal-500"><div class="flex items-center gap-2"><div class="w-2 h-2 bg-green-500 rounded-full"></div><span class="text-sm font-medium text-white">NZ</span></div></div>
+      </div>
+    </div>
 
-            // Update DOM Elements
-            document.getElementById('targetDisplay').textContent = targetTotal.toLocaleString();
-            document.getElementById('migratedDisplay').textContent = migratedTotal.toLocaleString();
-            document.getElementById('migratedCount').textContent = migratedTotal.toLocaleString();
-            
-            // Progress Bar & Percentage
-            document.getElementById('progressPercent').textContent = percentage + '%';
-            document.getElementById('barPercent').textContent = percentage + '%'; // Added percentage to bar
-            document.getElementById('mainProgressBar').style.width = percentage + '%';
-            document.getElementById('remainingText').textContent = remaining.toLocaleString();
+    <!-- TIMELINE -->
+    <div class="glass-panel rounded-2xl p-6 slide-up" style="animation-delay:0.4s">
+      <h3 class="text-lg font-semibold mb-6 text-slate-300">Migration Timeline</h3>
+      <div class="relative">
+        <div class="absolute left-4 top-0 bottom-0 w-0.5 bg-slate-700"></div>
+        <div class="relative flex items-start mb-8">
+          <div class="absolute left-2 w-4 h-4 bg-indigo-500 rounded-full border-4 border-slate-900"></div>
+          <div class="ml-12"><div class="text-sm text-indigo-400 font-medium">February 1, 2026</div><div class="text-white font-medium">Migration Started</div></div>
+        </div>
+        <div class="relative flex items-start mb-8">
+          <div class="absolute left-2 w-4 h-4 bg-blue-500 rounded-full border-4 border-slate-900"></div>
+          <div class="ml-12">
+            <div class="text-sm text-blue-400 font-medium" id="currentDateTimeline">Today</div>
+            <div class="text-white font-medium">Current Progress</div>
+            <div class="text-sm text-slate-500 mt-1" id="currentProgressText">--</div>
+          </div>
+        </div>
+        <div class="relative flex items-start opacity-50">
+          <div class="absolute left-2 w-4 h-4 bg-slate-600 rounded-full border-4 border-slate-900"></div>
+          <div class="ml-12">
+            <div class="text-sm text-slate-500 font-medium" id="projectedEndDate">TBD</div>
+            <div class="text-slate-400 font-medium">Projected Completion</div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-            // Update Circle Progress
-            const circle = document.getElementById('progressCircle');
-            circle.style.strokeDasharray = `${percentage}, 100`;
+    <footer class="mt-8 text-center text-slate-600 text-sm slide-up" style="animation-delay:0.5s">
+      <p>Auth0 Australia & New Zealand Migration Dashboard</p>
+    </footer>
+  </div>
 
-            // Dates and Timeline
-            const now = new Date();
-            const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
-            document.getElementById('currentDate').textContent = now.toLocaleDateString('en-AU', options);
-            document.getElementById('currentDateTimeline').textContent = now.toLocaleDateString('en-AU', { month: 'short', day: 'numeric', year: 'numeric' });
-            
-            // Days Elapsed Calculation
-            const diffTime = Math.abs(now - startDate);
-            const diffDays = Math.max(1, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
-            document.getElementById('daysElapsed').textContent = diffDays;
+  <script>
+    // ==========================================
+    // CONFIGURATION — update these numbers
+    // ==========================================
+    const DATA = {
+      nz: { broker: { done: 123, total: 133 }, staff: { done: 64, total: 146 }, admin: { done: 48, total: 52 } },
+      au: { broker: { done: 3325, total: 3905 }, staff: { done: 176, total: 193 }, admin: { done: 838, total: 1280 } },
+      startDate: new Date('2026-02-01')
+    };
+    // ==========================================
 
-            // Updated text in timeline
-            document.getElementById('currentProgressText').textContent = 
-                `${migratedTotal.toLocaleString()} accounts migrated (${percentage}%)`;
+    function pct(done, total) { return total > 0 ? Math.round((done / total) * 100) : 0; }
 
-            // Calculate estimated completion
-            const dailyAvg = Math.round(migratedTotal / diffDays);
-            if (dailyAvg > 0 && remaining > 0) {
-                const daysRemaining = Math.ceil(remaining / dailyAvg);
-                const completionDate = new Date();
-                completionDate.setDate(completionDate.getDate() + daysRemaining);
-                document.getElementById('projectedEndDate').textContent = 
-                    completionDate.toLocaleDateString('en-AU', { month: 'long', day: 'numeric', year: 'numeric' });
-            } else if (remaining <= 0) {
-                document.getElementById('projectedEndDate').textContent = 'Completed';
-            }
-        }
-    </script>
+    function updateDashboard() {
+      const { nz, au, startDate } = DATA;
+
+      // Combined totals
+      const broker = { done: nz.broker.done + au.broker.done, total: nz.broker.total + au.broker.total };
+      const staff  = { done: nz.staff.done  + au.staff.done,  total: nz.staff.total  + au.staff.total  };
+      const admin  = { done: nz.admin.done  + au.admin.done,  total: nz.admin.total  + au.admin.total  };
+
+      const totalDone  = broker.done + staff.done + admin.done;
+      const totalTarget = broker.total + staff.total + admin.total;
+      const remaining  = totalTarget - totalDone;
+      const overallPct = pct(totalDone, totalTarget);
+      const brokerPct  = pct(broker.done, broker.total);
+      const staffPct   = pct(staff.done, staff.total);
+      const adminPct   = pct(admin.done, admin.total);
+
+      // Summary cards
+      document.getElementById('summaryTarget').textContent    = totalTarget.toLocaleString();
+      document.getElementById('summaryMigrated').textContent  = totalDone.toLocaleString();
+      document.getElementById('summaryRemaining').textContent = remaining.toLocaleString();
+
+      // Overall progress bar
+      document.getElementById('mainProgressBar').style.width = overallPct + '%';
+      document.getElementById('barPercent').textContent      = overallPct + '%';
+      document.getElementById('targetDisplay').textContent   = totalTarget.toLocaleString();
+      document.getElementById('progressPercent').textContent = overallPct + '%';
+      document.getElementById('progressCircle').style.strokeDasharray = `${overallPct}, 100`;
+
+      // Combined category bars
+      document.getElementById('brokerBar').style.width  = brokerPct + '%';
+      document.getElementById('brokerPct').textContent  = brokerPct + '%';
+      document.getElementById('brokerLabel').textContent = `${broker.done.toLocaleString()} / ${broker.total.toLocaleString()}`;
+      document.getElementById('brokerPctSide').textContent = brokerPct + '%';
+
+      document.getElementById('staffBar').style.width   = staffPct + '%';
+      document.getElementById('staffPct').textContent   = staffPct + '%';
+      document.getElementById('staffLabel').textContent  = `${staff.done.toLocaleString()} / ${staff.total.toLocaleString()}`;
+      document.getElementById('staffPctSide').textContent = staffPct + '%';
+
+      document.getElementById('adminBar').style.width   = adminPct + '%';
+      document.getElementById('adminPct').textContent   = adminPct + '%';
+      document.getElementById('adminLabel').textContent  = `${admin.done.toLocaleString()} / ${admin.total.toLocaleString()}`;
+      document.getElementById('adminPctSide').textContent = adminPct + '%';
+
+      // Dates
+      const now = new Date();
+      document.getElementById('currentDate').textContent = now.toLocaleDateString('en-AU', { weekday:'short', year:'numeric', month:'short', day:'numeric' });
+      document.getElementById('currentDateTimeline').textContent = now.toLocaleDateString('en-AU', { month:'short', day:'numeric', year:'numeric' });
+
+      // Days elapsed
+      const diffDays = Math.max(1, Math.ceil(Math.abs(now - startDate) / 86400000));
+      document.getElementById('summaryDays').textContent = diffDays;
+      document.getElementById('currentProgressText').textContent = `${totalDone.toLocaleString()} accounts migrated (${overallPct}%)`;
+
+      // Projected completion
+      const dailyAvg = Math.round(totalDone / diffDays);
+      if (dailyAvg > 0 && remaining > 0) {
+        const completionDate = new Date();
+        completionDate.setDate(completionDate.getDate() + Math.ceil(remaining / dailyAvg));
+        document.getElementById('projectedEndDate').textContent = completionDate.toLocaleDateString('en-AU', { month:'long', day:'numeric', year:'numeric' });
+      } else {
+        document.getElementById('projectedEndDate').textContent = remaining <= 0 ? 'Completed 🎉' : 'TBD';
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      updateDashboard();
+      setInterval(updateDashboard, 60000);
+    });
+  </script>
 </body>
 </html>
