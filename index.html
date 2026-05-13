@@ -165,38 +165,38 @@
       <div class="glass-panel rounded-2xl p-6 state-card nz-card">
         <div class="flex justify-between items-center mb-6">
           <h2 class="text-2xl font-bold text-teal-300">🇳🇿 New Zealand</h2>
-          <span class="text-4xl font-black text-white">333</span>
+          <span class="text-4xl font-black text-white" id="nzTotal">—</span>
         </div>
         <div class="space-y-4">
           <div>
             <div class="flex justify-between text-sm mb-1">
               <span class="text-slate-300">Broker Migrated</span>
-              <span class="font-semibold text-white">121/131</span>
+              <span class="font-semibold text-white" id="nzBrokerLabel">—</span>
             </div>
             <div class="w-full bg-slate-800 rounded-full h-3 overflow-hidden">
-              <div class="h-full bg-indigo-500 rounded-full progress-bar" style="width:92%"></div>
+              <div class="h-full bg-indigo-500 rounded-full progress-bar" id="nzBrokerBar" style="width:0%"></div>
             </div>
-            <div class="text-right text-xs text-slate-400 mt-0.5">92%</div>
+            <div class="text-right text-xs text-slate-400 mt-0.5" id="nzBrokerPct">0%</div>
           </div>
           <div>
             <div class="flex justify-between text-sm mb-1">
               <span class="text-slate-300">Staff Migrated</span>
-              <span class="font-semibold text-white">67/147</span>
+              <span class="font-semibold text-white" id="nzStaffLabel">—</span>
             </div>
             <div class="w-full bg-slate-800 rounded-full h-3 overflow-hidden">
-              <div class="h-full bg-pink-500 rounded-full progress-bar" style="width:44%"></div>
+              <div class="h-full bg-pink-500 rounded-full progress-bar" id="nzStaffBar" style="width:0%"></div>
             </div>
-            <div class="text-right text-xs text-slate-400 mt-0.5">44%</div>
+            <div class="text-right text-xs text-slate-400 mt-0.5" id="nzStaffPct">0%</div>
           </div>
           <div>
             <div class="flex justify-between text-sm mb-1">
               <span class="text-slate-300">Branch Admins Migrated</span>
-              <span class="font-semibold text-white">51/55</span>
+              <span class="font-semibold text-white" id="nzAdminLabel">—</span>
             </div>
             <div class="w-full bg-slate-800 rounded-full h-3 overflow-hidden">
-              <div class="h-full bg-teal-500 rounded-full progress-bar" style="width:92%"></div>
+              <div class="h-full bg-teal-500 rounded-full progress-bar" id="nzAdminBar" style="width:0%"></div>
             </div>
-            <div class="text-right text-xs text-slate-400 mt-0.5">92%</div>
+            <div class="text-right text-xs text-slate-400 mt-0.5" id="nzAdminPct">0%</div>
           </div>
         </div>
       </div>
@@ -205,38 +205,38 @@
       <div class="glass-panel rounded-2xl p-6 state-card au-card">
         <div class="flex justify-between items-center mb-6">
           <h2 class="text-2xl font-bold text-indigo-300">🇦🇺 Australia</h2>
-          <span class="text-4xl font-black text-white">5378</span>
+          <span class="text-4xl font-black text-white" id="auTotal">—</span>
         </div>
         <div class="space-y-4">
           <div>
             <div class="flex justify-between text-sm mb-1">
               <span class="text-slate-300">Broker Migrated</span>
-              <span class="font-semibold text-white">3448/3892</span>
+              <span class="font-semibold text-white" id="auBrokerLabel">—</span>
             </div>
             <div class="w-full bg-slate-800 rounded-full h-3 overflow-hidden">
-              <div class="h-full bg-indigo-500 rounded-full progress-bar" style="width:85%"></div>
+              <div class="h-full bg-indigo-500 rounded-full progress-bar" id="auBrokerBar" style="width:0%"></div>
             </div>
-            <div class="text-right text-xs text-slate-400 mt-0.5">85%</div>
+            <div class="text-right text-xs text-slate-400 mt-0.5" id="auBrokerPct">0%</div>
           </div>
           <div>
             <div class="flex justify-between text-sm mb-1">
               <span class="text-slate-300">Staff Migrated</span>
-              <span class="font-semibold text-white">175/190</span>
+              <span class="font-semibold text-white" id="auStaffLabel">—</span>
             </div>
             <div class="w-full bg-slate-800 rounded-full h-3 overflow-hidden">
-              <div class="h-full bg-pink-500 rounded-full progress-bar" style="width:91%"></div>
+              <div class="h-full bg-pink-500 rounded-full progress-bar" id="auStaffBar" style="width:0%"></div>
             </div>
-            <div class="text-right text-xs text-slate-400 mt-0.5">91%</div>
+            <div class="text-right text-xs text-slate-400 mt-0.5" id="auStaffPct">0%</div>
           </div>
           <div>
             <div class="flex justify-between text-sm mb-1">
               <span class="text-slate-300">Branch Admin Migrated</span>
-              <span class="font-semibold text-white">882/1304</span>
+              <span class="font-semibold text-white" id="auAdminLabel">—</span>
             </div>
             <div class="w-full bg-slate-800 rounded-full h-3 overflow-hidden">
-              <div class="h-full bg-teal-500 rounded-full progress-bar" style="width:65%"></div>
+              <div class="h-full bg-teal-500 rounded-full progress-bar" id="auAdminBar" style="width:0%"></div>
             </div>
-            <div class="text-right text-xs text-slate-400 mt-0.5">83%</div>
+            <div class="text-right text-xs text-slate-400 mt-0.5" id="auAdminPct">0%</div>
           </div>
         </div>
       </div>
@@ -294,40 +294,96 @@
   </div>
 
   <script>
-    // ==========================================
-    // CONFIGURATION — update these numbers
-    // ==========================================
-    const DATA = {
-      nz: { broker: { done: 123, total: 133 }, staff: { done: 64, total: 146 }, admin: { done: 48, total: 52 } },
-      au: { broker: { done: 3325, total: 3905 }, staff: { done: 176, total: 193 }, admin: { done: 838, total: 1280 } },
-      startDate: new Date('2026-02-01')
+    // ==========================================================
+    // ⚙️  ONLY EDIT THIS BLOCK — format: "migrated/total"
+    // ==========================================================
+    const INPUT = {
+      nz: {
+        broker: "121/131",
+        staff:  "67/147",
+        admin:  "51/55"
+      },
+      au: {
+        broker: "3448/3892",
+        staff:  "175/190",
+        admin:  "882/1304"
+      },
+      startDate: "2026-02-01"
     };
-    // ==========================================
+    // ==========================================================
+    // 🚫 No need to edit anything below — fully auto-calculated
+    // ==========================================================
+
+    function parse(str) {
+      const [done, total] = str.split('/').map(s => parseInt(s.trim(), 10) || 0);
+      return { done, total };
+    }
+
+    const DATA = {
+      nz: {
+        broker: parse(INPUT.nz.broker),
+        staff:  parse(INPUT.nz.staff),
+        admin:  parse(INPUT.nz.admin)
+      },
+      au: {
+        broker: parse(INPUT.au.broker),
+        staff:  parse(INPUT.au.staff),
+        admin:  parse(INPUT.au.admin)
+      },
+      startDate: new Date(INPUT.startDate)
+    };
 
     function pct(done, total) { return total > 0 ? Math.round((done / total) * 100) : 0; }
 
+    function updateRegion(prefix, region) {
+      const totalAccounts = region.broker.total + region.staff.total + region.admin.total;
+      document.getElementById(prefix + 'Total').textContent = totalAccounts.toLocaleString();
+
+      // Broker
+      const bPct = pct(region.broker.done, region.broker.total);
+      document.getElementById(prefix + 'BrokerLabel').textContent = `${region.broker.done}/${region.broker.total}`;
+      document.getElementById(prefix + 'BrokerBar').style.width = bPct + '%';
+      document.getElementById(prefix + 'BrokerPct').textContent = bPct + '%';
+
+      // Staff
+      const sPct = pct(region.staff.done, region.staff.total);
+      document.getElementById(prefix + 'StaffLabel').textContent = `${region.staff.done}/${region.staff.total}`;
+      document.getElementById(prefix + 'StaffBar').style.width = sPct + '%';
+      document.getElementById(prefix + 'StaffPct').textContent = sPct + '%';
+
+      // Admin
+      const aPct = pct(region.admin.done, region.admin.total);
+      document.getElementById(prefix + 'AdminLabel').textContent = `${region.admin.done}/${region.admin.total}`;
+      document.getElementById(prefix + 'AdminBar').style.width = aPct + '%';
+      document.getElementById(prefix + 'AdminPct').textContent = aPct + '%';
+    }
+
     function updateDashboard() {
       const { nz, au, startDate } = DATA;
+
+      // Per-region cards
+      updateRegion('nz', nz);
+      updateRegion('au', au);
 
       // Combined totals
       const broker = { done: nz.broker.done + au.broker.done, total: nz.broker.total + au.broker.total };
       const staff  = { done: nz.staff.done  + au.staff.done,  total: nz.staff.total  + au.staff.total  };
       const admin  = { done: nz.admin.done  + au.admin.done,  total: nz.admin.total  + au.admin.total  };
 
-      const totalDone  = broker.done + staff.done + admin.done;
+      const totalDone   = broker.done + staff.done + admin.done;
       const totalTarget = broker.total + staff.total + admin.total;
-      const remaining  = totalTarget - totalDone;
-      const overallPct = pct(totalDone, totalTarget);
-      const brokerPct  = pct(broker.done, broker.total);
-      const staffPct   = pct(staff.done, staff.total);
-      const adminPct   = pct(admin.done, admin.total);
+      const remaining   = totalTarget - totalDone;
+      const overallPct  = pct(totalDone, totalTarget);
+      const brokerPct   = pct(broker.done, broker.total);
+      const staffPct    = pct(staff.done, staff.total);
+      const adminPct    = pct(admin.done, admin.total);
 
       // Summary cards
       document.getElementById('summaryTarget').textContent    = totalTarget.toLocaleString();
       document.getElementById('summaryMigrated').textContent  = totalDone.toLocaleString();
       document.getElementById('summaryRemaining').textContent = remaining.toLocaleString();
 
-      // Overall progress bar
+      // Overall progress bar + circle
       document.getElementById('mainProgressBar').style.width = overallPct + '%';
       document.getElementById('barPercent').textContent      = overallPct + '%';
       document.getElementById('targetDisplay').textContent   = totalTarget.toLocaleString();
@@ -335,20 +391,20 @@
       document.getElementById('progressCircle').style.strokeDasharray = `${overallPct}, 100`;
 
       // Combined category bars
-      document.getElementById('brokerBar').style.width  = brokerPct + '%';
-      document.getElementById('brokerPct').textContent  = brokerPct + '%';
-      document.getElementById('brokerLabel').textContent = `${broker.done.toLocaleString()} / ${broker.total.toLocaleString()}`;
-      document.getElementById('brokerPctSide').textContent = brokerPct + '%';
+      document.getElementById('brokerBar').style.width      = brokerPct + '%';
+      document.getElementById('brokerPct').textContent      = brokerPct + '%';
+      document.getElementById('brokerLabel').textContent    = `${broker.done.toLocaleString()} / ${broker.total.toLocaleString()}`;
+      document.getElementById('brokerPctSide').textContent  = brokerPct + '%';
 
-      document.getElementById('staffBar').style.width   = staffPct + '%';
-      document.getElementById('staffPct').textContent   = staffPct + '%';
-      document.getElementById('staffLabel').textContent  = `${staff.done.toLocaleString()} / ${staff.total.toLocaleString()}`;
-      document.getElementById('staffPctSide').textContent = staffPct + '%';
+      document.getElementById('staffBar').style.width       = staffPct + '%';
+      document.getElementById('staffPct').textContent       = staffPct + '%';
+      document.getElementById('staffLabel').textContent     = `${staff.done.toLocaleString()} / ${staff.total.toLocaleString()}`;
+      document.getElementById('staffPctSide').textContent   = staffPct + '%';
 
-      document.getElementById('adminBar').style.width   = adminPct + '%';
-      document.getElementById('adminPct').textContent   = adminPct + '%';
-      document.getElementById('adminLabel').textContent  = `${admin.done.toLocaleString()} / ${admin.total.toLocaleString()}`;
-      document.getElementById('adminPctSide').textContent = adminPct + '%';
+      document.getElementById('adminBar').style.width       = adminPct + '%';
+      document.getElementById('adminPct').textContent       = adminPct + '%';
+      document.getElementById('adminLabel').textContent     = `${admin.done.toLocaleString()} / ${admin.total.toLocaleString()}`;
+      document.getElementById('adminPctSide').textContent   = adminPct + '%';
 
       // Dates
       const now = new Date();
